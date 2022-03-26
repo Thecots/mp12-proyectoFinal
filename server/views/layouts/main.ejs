@@ -6,13 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/css/main.css">
-   <% if (typeof(error) == "undefined") { %>
+   <% if (typeof(login) != "undefined") { %>
         <link rel="stylesheet" href="/css/login.css">
         <link rel="stylesheet" href="/css/inputs.css">
+    <% } %>
+    <% if (typeof(home) != "undefined") { %>
+        <link rel="stylesheet" href="/css/home.css">
+        <link rel="stylesheet" href="/css/header.css">
     <% } %>
 </head>
 <body>
     <%- include('./../partials/header.ejs') %> 
     <%- body %>
+    <script src="/js/global.js"></script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+<% if (typeof(login) == 'undefined') { %>
+  <header>
+    <div class="_logo" onclick="window.location.href='/'">
+      <img src="https://img.icons8.com/ios-filled/100/000000/gorilla.png">
+      <h1>PROJECT MONKEY</h1>
+    </div>
+    <% if (!session.ok) { %>
+      <!-- session false -->
+      <div class="sessionoff">
+        <a href="/login">Iniciar sesión</a>
+        <a href="/register">Crear cuenta</a>
+      </div>
+    <% }else{ %>
+      <!-- session true -->
+      <div class="sessionon">
+        <div class="img">
+          <div>
+            <img src="<%= session.picture %>" alt="">
+          </div>
+        </div>
+        <h1><%= session.username %></h1>
+        <nav>
+          <li><a href="/profile/<%= session.username %>">Perfil</a></li>
+          <span></span>
+          <li><a onclick="cerrarSession()">Cerrar sesión</a></li>
+        </nav>
+      </div>
+    <% } %>
+  </header>
+<% } %>

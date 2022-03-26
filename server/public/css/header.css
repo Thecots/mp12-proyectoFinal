@@ -1,0 +1,146 @@
+body{
+  background-color: #f2f2f2;
+}
+
+/* HEADER */
+header{
+  width: 100%;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  justify-content: space-between;
+  box-shadow: -10px 0 10px 0 rgba(0, 0, 0, 0.089);
+  padding: 0 30px;
+}
+
+/* header - logo */
+header ._logo{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+header ._logo:active{
+  transform: scale(0.98);
+}
+
+header ._logo img{
+  border: 3px solid black;
+  border-radius: 50%;
+  padding: 2px;
+  width: 50px;
+}
+
+header ._logo h1{
+  font-weight: 500;
+}
+
+/* header session off */
+
+header .sessionoff{
+  display: flex;
+  gap: 20px;
+}
+
+header .sessionoff a{
+  text-decoration: none;
+  width: 150px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: white;
+  background-color: royalblue;
+  transition: transform 0.3s ease;
+}
+
+header .sessionoff a:nth-child(2){
+  background-color: rgb(31, 31, 31);
+}
+
+header .sessionoff a:hover{
+  filter: brightness(1.2);
+}
+
+header .sessionoff a:active{
+  transform: scale(0.97);
+}
+
+/* header session on */
+
+
+header .sessionon{
+  display: grid;
+  grid-template-areas: 
+  "img name"
+  "img nav"
+  ;
+  padding: 5px 10px;
+}
+
+header .sessionon:hover{
+  box-shadow: 0 0 0 2px rgba(146, 146, 146, 0.164);
+  background-color: #f2f2f2;
+  border-radius: 4px;
+}
+
+header .sessionon .img{
+  grid-area: img ;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+header .sessionon .img div{
+  width: 50px;
+  height: 50px;
+  margin-right: 5px;
+}
+header .sessionon .img div img{
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 0 2px rgba(46, 46, 46, 0.554);
+  border-radius: 5px;
+  object-fit: cover;
+}
+header .sessionon h1{
+  grid-area: name ;
+  font-size: 20px;
+  padding-left: 4px;
+
+}
+header .sessionon nav{
+  grid-area: nav ;
+  display: flex;
+  gap:  10px;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+}
+
+header .sessionon nav span{
+  width: 1px;
+  height:14px;
+  background-color: black;
+}
+
+header .sessionon nav a{
+  padding: 4px;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 400;
+  color: rgba(49, 49, 49, 0.685);
+  cursor: pointer;
+  font-weight: 500;
+
+}
+
+header .sessionon nav a:hover{
+  color: #000;
+}

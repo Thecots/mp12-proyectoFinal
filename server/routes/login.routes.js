@@ -35,12 +35,13 @@ router.get('/login', async (req, res) => {
 
 /* POST - login */
 router.post('/login', async(req, res) => {
-  sql = await dbfind(`SELECT username, class, passwd FROM users WHERE username = '${req.body.username}'`);
+  sql = await dbfind(`SELECT username, class, passwd, picture FROM users WHERE username = '${req.body.username}'`);
   if(sql.length && bcrypt.compareSync(req.body.password, sql[0].passwd)){
     let token = jwt.sign(
       {
         username: sql[0].username,
-        class: sql[0].class
+        class: sql[0].class,
+        picture: sql[0].picture
       },
       process.env.SEED,
       { expiresIn: 9999 }
@@ -62,10 +63,9 @@ router.get('/register', (req, res) => {
 router.put('/register', async (req, res) => {
   username = req.body.username;
   sql = await dbfind(`SELECT username FROM users WHERE username = '${username}'`);
-  console.log(sql);
   if(!sql.length){
     password = bcrypt.hashSync(req.body.password, 10)
-    sql = await dbfind(`INSERT INTO users VALUES (null,0,'${username}','${password}',null)`)
+    sql = await dbfind(`INSERT INTO users VALUES (null,0,'${username}','${password}','/img/defaultuser.png')`)
     return res.send(JSON.stringify({ok: true}))
   }
   return res.send(JSON.stringify({ok: false}))

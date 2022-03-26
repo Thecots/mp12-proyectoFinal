@@ -1,0 +1,88 @@
+main{
+  width: 1500px;
+  max-width: 100%;
+  background: white;
+  height: fit-content;
+  margin: 15px auto 50px auto;
+}
+
+main section{
+  padding: 10px;
+}
+
+.foro{
+  margin-bottom: 35px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+h1,h2,h3{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.foro > h1{
+  background-color: rgb(27, 27, 27);
+  border-radius: 5px;
+  color: white;
+  font-weight: 500;
+  font-size: 25px;
+  padding: 5px;
+}
+
+.foro > div{
+  cursor: pointer;
+  display: grid;
+  grid-template-areas: 
+  "img h2"
+  "img h3"
+  ;
+  grid-template-columns: 70px 1fr;
+  width: 100%;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px dotted rgb(175, 175, 175);
+  transition: transform 0.3s ease;
+}
+
+.foro > div:hover{
+  background-color: rgb(238, 238, 238);
+}
+
+.foro > div:active{
+  transform: scale(0.99);
+}
+
+.foro div .img{
+  width: 60px;
+  height: 60px;
+  grid-area: img;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.foro div .img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: invert(1);
+}
+
+.foro div h2{
+  grid-area: h2;
+  font-weight: 500;
+  font-size: 25px;
+}
+
+.foro div h3{
+  grid-area: h3;
+  font-weight: 400;
+  font-size: 15px;
+
+}
