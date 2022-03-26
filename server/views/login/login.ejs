@@ -1,0 +1,63 @@
+<main>
+  <img src="https://images.wallpaperscraft.com/image/single/mountains_peaks_snow_171419_1920x1080.jpg">
+  <aside>
+    <div class="logo">
+      <img src="https://img.icons8.com/ios-filled/100/000000/gorilla.png">
+      <h1>Iniciar sesión</h1>
+    </div>
+    <form>
+      <div class="text-field" id="username">
+        <input minlength="4" type="text" required autocomplete="off" autofocus> 
+        <label class="label">Nombre de usuario</label>
+    </div>
+    <div class="text-field" id="password">
+      <input minlength="4" type="password" required autocomplete="off" autofocus> 
+      <label class="label">Contraseña</label>
+    </div>
+    <p style="color: red; display: none;"></p>
+    <div class="btn">
+      <a href="/register">Crear cuenta</a>
+      <button>Iniciar sesión</button>
+    </div>
+    </form>
+  </aside>
+</main>
+<script>
+  const urlParams = new URLSearchParams( window.location.search);
+  const form = document.querySelector('form')
+  const p = document.querySelector('p')
+  
+  if(urlParams.get('username') != null){
+    form.children[0].children[0].value = urlParams.get('username')
+  }
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    p.style.display = 'none';
+    if(form.children[0].children[0].value.length >= 4
+      && form.children[1].children[0].value.length >= 4){
+        fetch('/login',
+          {method: 'POST',
+          body: JSON.stringify({
+            username: form.children[0].children[0].value,
+            password: form.children[1].children[0].value
+          }),
+          headers:{
+            'Content-Type': 'application/json'
+          }}
+        ).then(res => res.json())
+        .then(res => {
+          if(res.ok){
+            document.cookie = `session=${res.token}; expires=Thu, 18 Dec 2050 12:00:00 UTC; path=/`;
+            window.location.href = '/';
+          }else{
+            p.innerHTML = 'Usuaio o contraseña incorrectos';
+            p.style.display = 'block';
+          }
+        });
+      }else{
+        p.innerHTML = 'Usuaio o contraseña incorrectos';
+        p.style.display = 'block';
+      }
+  });
+
+</script>

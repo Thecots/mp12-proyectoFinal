@@ -1,0 +1,91 @@
+:root{
+  --dark1-:rgb(29, 29, 29);
+}
+main{
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+main > img{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+  z-index: -1;
+  filter: grayscale(1);
+}
+
+/* aside */
+aside{
+  width: 400px;
+  min-height: 100vh;
+  padding: 10px;
+  top: 0;
+  left: 0;
+  background-color: white;
+  z-index: 99;
+
+}
+
+aside .logo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 30%;
+  margin-bottom: 15%;
+}
+
+aside img{
+  border-radius: 50%;
+  border: 3px solid black;
+  padding: 5px;
+}
+
+aside .logo > h1{
+  font-family: 'Poppins';
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 35px;
+}
+
+/* form */
+
+form{
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 50px;
+}
+
+.btn{
+  display: flex;
+  justify-content: space-between;
+  margin-top:10px;
+
+}
+
+.btn button{
+  background-color: var(--dark1-);
+  color: white;
+  font-family: 500;
+  padding: 5px 15px;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 17px;
+
+}
+
+.btn a{
+  font-size: 15px;
+  background-color: rgba(107, 107, 107, 0.657);
+  color: white;
+  padding: 5px 15px;
+  text-decoration: none;
+  border-radius: 3px;
+}
