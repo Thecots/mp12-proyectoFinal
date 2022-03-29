@@ -6,18 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/header.css">
+    
+    <% if (typeof(categoria) != "undefined") { %>
+        <link rel="stylesheet" href="/css/categoria.css">
+    <% } %>
    <% if (typeof(login) != "undefined") { %>
         <link rel="stylesheet" href="/css/login.css">
         <link rel="stylesheet" href="/css/inputs.css">
     <% } %>
     <% if (typeof(home) != "undefined") { %>
         <link rel="stylesheet" href="/css/home.css">
-        <link rel="stylesheet" href="/css/header.css">
+    <% } %>
+    <% if (typeof(crearpost) != "undefined") { %>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/crearpost.css">
     <% } %>
 </head>
 <body>
     <%- include('./../partials/header.ejs') %> 
     <%- body %>
     <script src="/js/global.js"></script>
+    
 </body>
 </html>

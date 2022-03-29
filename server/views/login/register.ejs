@@ -1,21 +1,21 @@
 <main>
   <img src="https://wallpaperaccess.com/full/391862.jpg">
   <aside>
-    <div class="logo">
-      <img src="https://img.icons8.com/ios-filled/100/000000/gorilla.png">
+    <div class="logo" onclick="window.location.href='/'">
+      <img src="https://img.icons8.com/ios-filled/100/000000/gorilla.png" >
       <h1>Crear cuenta</h1>
     </div>
     <form action="">
       <div class="text-field" id="username">
-        <input minlength="4" type="text" required autocomplete="off" autofocus value="root"> 
+        <input minlength="4" type="text" required autocomplete="off" autofocus value=""> 
         <label class="label">Nombre de usuario</label>
       </div>
       <div class="text-field" id="password">
-        <input minlength="4" type="password" required autocomplete="off" autofocus value="root"> 
+        <input minlength="4" type="password" required autocomplete="off" autofocus value=""> 
         <label class="label">Contraseña</label>
       </div>
       <div class="text-field" id="password2">
-        <input minlength="4" type="password" required autocomplete="off" autofocus value="root"> 
+        <input minlength="4" type="password" required autocomplete="off" autofocus> 
         <label class="label">Repetir contraseña</label>
       </div>
       <p style="color: red; display: none;"></p>
@@ -51,13 +51,13 @@
             alert('Usuario creado correctamente')
             window.location.href = '/login?username='+form.children[0].children[0].value;
           }else{
-            p.innerHTML = 'Usuaio o contraseña incorrectos';
+            p.innerHTML = 'Este nombre de usuario ya está en uso.';
             p.style.display = 'block';
           }
         });
       }else{    
        if(form.children[1].children[0].value.length !== form.children[2].children[0].value.length){
-          p.innerHTML = 'Las contraseñas no coinciden';
+          p.innerHTML = 'Las contraseñas no coinciden.';
           p.style.display = 'block';
         }else{
           p.innerHTML = 'error';

@@ -4,9 +4,9 @@
   <section>
    <% data.cat.forEach(n => { %>
     <div class="foro">
-      <h1><%= n %></h1>
-      <% data.sql.filter(g => g.categoria == n).forEach((e,i) =>{%>
-        <div <% if ((i+1) == data.sql.filter(g => g.categoria == n).length) { %> style="border: 0;" <% } %> onclick="window.location.href = '/foros/<%= e.id %>/'">
+      <h1><%= n.categoria %></h1>
+      <% data.sql.filter(g => g.categoria == n.categoria).forEach((e,i) =>{%>
+        <div <% if ((i+1) == data.sql.filter(g => g.categoria == n.categoria).length) { %> style="border: 0;" <% } %> onclick="window.location.href = '/foros/<%= e.id %>/1'">
           <div <%=  `style=background:${e.color};` %>  class="img">
             <img src="<%= e.image %>">
           </div>

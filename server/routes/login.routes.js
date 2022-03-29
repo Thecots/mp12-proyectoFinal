@@ -1,30 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const mysql = require('mysql');
+const { dbfind } = require("../middlewares/dbfind");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-
-/* sql */
-let con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "pkmonkey"
-});
-
-function dbfind(sql){
-  console.log(sql);
-  try {
-    return new Promise(res => {
-      con.query(sql, function (err, result) {
-        if (err)  res(false)
-        res(result)
-      });
-    })
-  } catch (error) {
-    return false;
-  }
-}
 
 /* GET - login */
 router.get('/login', async (req, res) => {
@@ -35,16 +13,17 @@ router.get('/login', async (req, res) => {
 
 /* POST - login */
 router.post('/login', async(req, res) => {
-  sql = await dbfind(`SELECT username, class, passwd, picture FROM users WHERE username = '${req.body.username}'`);
-  if(sql.length && bcrypt.compareSync(req.body.password, sql[0].passwd)){
+  sql = await dbfind(`SELECT username, class, id, passwd, picture FROM users WHERE username = '${req.body.username}'`);
+  if(sql.res.length && bcrypt.compareSync(req.body.password, sql.res[0].passwd)){
     let token = jwt.sign(
       {
-        username: sql[0].username,
-        class: sql[0].class,
-        picture: sql[0].picture
+        username: sql.res[0].username,
+        id: sql.res[0].id,
+        class: sql.res[0].class,
+        picture: sql.res[0].picture
       },
       process.env.SEED,
-      { expiresIn: 9999 }
+      { expiresIn: '9999days' }
     );
     res.setHeader("X-Access-Token", token);
     return res.send(JSON.stringify({ok: true, token}))
@@ -63,9 +42,9 @@ router.get('/register', (req, res) => {
 router.put('/register', async (req, res) => {
   username = req.body.username;
   sql = await dbfind(`SELECT username FROM users WHERE username = '${username}'`);
-  if(!sql.length){
+  if(!sql.res.length){
     password = bcrypt.hashSync(req.body.password, 10)
-    sql = await dbfind(`INSERT INTO users VALUES (null,0,'${username}','${password}','/img/defaultuser.png')`)
+    sql = await dbfind(`INSERT INTO users(username,passwd) VALUES ('${username}','${password}')`)
     return res.send(JSON.stringify({ok: true}))
   }
   return res.send(JSON.stringify({ok: false}))

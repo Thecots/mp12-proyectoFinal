@@ -1,9 +1,9 @@
 main{
   width: 1500px;
   max-width: 100%;
-  background: white;
+  background-color: white;
   height: fit-content;
-  margin: 15px auto 50px auto;
+  margin: 0 auto 50px auto;
 }
 
 main section{
@@ -30,7 +30,10 @@ h1,h2,h3{
   color: white;
   font-weight: 500;
   font-size: 25px;
-  padding: 5px;
+  padding: 5px 7px;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .foro > div{
@@ -84,5 +87,11 @@ h1,h2,h3{
   grid-area: h3;
   font-weight: 400;
   font-size: 15px;
+}
 
+
+/* CREAR POST */
+
+.crearpost .editor{
+  
 }

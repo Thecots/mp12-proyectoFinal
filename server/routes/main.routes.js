@@ -1,55 +1,34 @@
 const express = require("express");
 const router = express.Router();
-const path = require('path');
 const {cehckSession} = require('./../middlewares/session');
-const mysql = require('mysql');
-
-
-/* sql */
-let con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "pkmonkey"
-});
-
-function dbfind(sql){
-  console.log(sql);
-  try {
-    return new Promise(res => {
-      con.query(sql, function (err, result) {
-        if (err)  res(false)
-        res(result)
-      });
-    })
-  } catch (error) {
-    return false;
-  }
-}
-
+const { dbfind } = require("../middlewares/dbfind");
+const path = require('path');
 
 router.get('/', [cehckSession], async(req, res) => {
   let sql = await dbfind(`SELECT foros.name name,
-                          foros.description description,
-                          foros.id,
-                          foros.image,
-                          foros.color,
-                          categorias.categoria
-                          FROM foros
-                          LEFT JOIN categorias ON foros.categoria = categorias.id
-                          ORDER BY categorias.id`);
+  foros.description description,
+  foros.id,
+  foros.image,
+  foros.color,
+  categorias.categoria
+  FROM foros
+  LEFT JOIN categorias ON foros.categoria = categorias.id
+  ORDER BY categorias.id`);
+  let cat = await dbfind('SELECT categoria FROM categorias');
+
   res.render("index",{
     home: true,
     session: req.session,
     data: {
-      sql,
-      cat: sql.filter((v,i,a)=>a.findIndex(v2=>(v2.categoria===v.categoria))===i).map(n => n.categoria)
-    },
-
+      sql: sql.res,
+      cat: cat.res
+      }
   });
 })
 
 router.use(require('./login.routes'))
+router.use(require('./foro.routes'))
+router.use(require('./profile.routes'))
 
 /* 404 */
 router.get('*', (req, res) => {

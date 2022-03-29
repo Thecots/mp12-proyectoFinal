@@ -144,3 +144,34 @@ header .sessionon nav a{
 header .sessionon nav a:hover{
   color: #000;
 }
+
+
+/* menú */
+
+section.menu{
+  height: 30px;
+  width: 100%;
+  background-color: royalblue;
+}
+section.menu nav{
+  max-width: 100%;
+  width: 1500px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+section.menu nav ul{
+  height: 100%;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: baseline;
+}
+
+section.menu nav ul a{
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  padding: 0 10px;
+  border-right: 1px solid black;
+}

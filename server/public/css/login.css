@@ -89,3 +89,16 @@ form{
   text-decoration: none;
   border-radius: 3px;
 }
+
+.btn *:hover{
+  filter: brightness(1.1);
+}
+
+.logo img{
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo img:active{
+  transform: scale(0.95);
+}
