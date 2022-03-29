@@ -2,6 +2,7 @@ DROP DATABASE IF EXISTS pkmonkey;
 CREATE DATABASE pkmonkey;
 USE pkmonkey;
 
+
 CREATE table class(
   id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   class VARCHAR(20)
@@ -35,14 +36,12 @@ CREATE TABLE posts(
   id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   title VARCHAR(100) NOT NULL,
   content LONGTEXT NOT NULL,
-  created date default current_timestamp,
+  created DATETIME default current_timestamp,
   foro INT NOT NULL,
   user INT NOT NULL,
-  userres INT default null,
   FOREIGN KEY fk_foro(foro) REFERENCES foros(id),
-  FOREIGN KEY fk_user(user) REFERENCES users(id),
-  FOREIGN KEY fk_userres(userres) REFERENCES users(id)
-);
+  FOREIGN KEY fk_user(user) REFERENCES users(id)
+  );
 
 CREATE TABLE postslikes(
   id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -57,7 +56,7 @@ CREATE TABLE comments(
   coment LONGTEXT NOT NULL,
   post INT not null,
   user INT not null,
-  created date default current_timestamp,
+  created DATETIME default current_timestamp,
   FOREIGN KEY fk_post_pc(post) REFERENCES posts(id),
   FOREIGN KEY fk_user_pc(user) REFERENCES users(id)
 );
@@ -71,7 +70,6 @@ CREATE TABLE comentslikes(
 );
 
 
-
 INSERT INTO class VALUES
 (1,'OWNER'),
 (2,'ADMINISTRATOR'),
@@ -79,7 +77,9 @@ INSERT INTO class VALUES
 
 
 INSERT INTO users VALUES
-(1,1,'root','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK','/img/defaultuser.png');
+(1,1,'root','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK','/img/defaultuser.png'),
+(2,3,'DiEgoSnNiPeR16','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK','/img/defaultuser.png');
+
 
 INSERT INTO categorias VALUES
 (1,'Videojuegos'),
@@ -94,5 +94,10 @@ INSERT INTO foros VALUES
 (5,'Xbox','Juegos, Xbox Live, Arcade, retrocompatibilidad y todo sobre las consolas Xbox de Microsoft.','https://img.icons8.com/ios-filled/100/000000/xbox.png','#50880b',3),
 (6,'PC / Hardware','Jugadores de PC, Steam, juegos digitales y expertos en configurar equipos y presupuestos.','https://img.icons8.com/ios-filled/100/000000/computer.png','#be0b0b',3);
 
+
 INSERT INTO posts(title,content,foro,user) VALUES
 ('¿Pokémon favorito?','<h1 style="font-size: 38px; color: rgb(17, 17, 17); font-family: &quot;Roboto Condensed&quot;, Arial;"><pre class="b_fw5 main" style="margin-right: 10px; margin-left: 10px; font-family: Roboto, Arial; font-size: 18px; overflow-wrap: break-word; white-space: pre-line; line-height: 27px; color: rgb(0, 0, 0); overflow: hidden; font-weight: normal !important;">Bulbasaur.</pre><pre class="b_fw5 main" style="margin-right: 10px; margin-left: 10px; font-family: Roboto, Arial; font-size: 18px; overflow-wrap: break-word; white-space: pre-line; line-height: 27px; color: rgb(0, 0, 0); overflow: hidden; font-weight: normal !important;"><img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png" alt="Bulbasaur | Pokédex"><br></pre><pre class="b_fw5 main" style="margin-right: 10px; margin-left: 10px; font-family: Roboto, Arial; font-size: 18px; overflow-wrap: break-word; white-space: pre-line; line-height: 27px; color: rgb(0, 0, 0); overflow: hidden; font-weight: normal !important;"><br></pre><pre class="b_fw5 main" style="margin-right: 10px; margin-left: 10px; font-family: Roboto, Arial; font-size: 18px; overflow-wrap: break-word; white-space: pre-line; line-height: 27px; color: rgb(0, 0, 0); overflow: hidden; font-weight: normal !important;">Se me ocurrió preguntarlo, a propósito del regalo que le hizo el embajador Japonés al presidente electo de Chile, Gabriel Boric quien asume la presidencia hoy. : )</pre></h1>\n',1,1);
+
+
+INSERT INTO comments(coment,post,user) VALUES
+('Mariiitooooo',1,2);

@@ -6,6 +6,85 @@
    <% } %>
   </div>
   <section>
-   
+    <% if (data.post.length != 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th class="tema">TEMA</th>
+            <th class="autor">AUTOR</th>
+            <th class="umensaje">ÚLTIMO MENSAJE</th>
+            <th class="resp">RESP.</th>
+            <th class="votos">VOTOS</th>
+          </tr>
+        </thead>
+        <tbody>
+     <% data.post.forEach(n => { %>
+        <tr>
+          <td class="tema">
+            <div>
+              <a href='/foro/tema/<%=data.id%>/<%=n.id%>/'><%= n.title %></a>
+            </div>
+          </td>
+          <td class="autor">
+              <img src="<%=n.picture%>" onclick="window.location.href = '/profile/<%=n.creatorUsername%>'">
+              <div>
+                <a href="/profile/<%=n.creatorUsername%>"><%=n.creatorUsername%></a>
+                <br>
+                <span>
+                  <% if (n.created.y != 0) { %>
+                    <%= n.created.y == 1 ? 'Hace'+n.created.y+' Año': 'Hace'+n.created.y+' Años'%>
+                 <% }else if(n.created.mo != 0){ %>
+                    <%= n.created.mo == 1 ? 'Hace'+n.created.mo+' Mes': 'Hace'+n.created.mo+' Meses'%>
+                  <% }else{ %>
+                    <%= n.created.d == 1 ? 'Hace'+n.created.d+' Día': n.created.d == 0 ? 'Hoy': 'Hace'+n.created.d+' Días'%>
+                  <% } %>
+                </span>
+              </div>     
+          </td>
+          <td class="umensaje">
+           <% if (n.lastComment === null) { %>
+            <!-- no hay comentarios -->
+            <a href="/profile/<%=n.creatorUsername%>"><%= n.creatorUsername %></a><br>
+            <span>
+              <% if (n.created.y != 0) { %>
+                <%= n.created.y == 1 ? 'Hace'+n.created.y+' Año': 'Hace'+n.created.y+' Años'%>
+             <% }else if(n.created.mo != 0){ %>
+                <%= n.created.mo == 1 ? 'Hace'+n.created.mo+' Mes': 'Hace'+n.created.mo+' Meses'%>
+              <% }else{ %>
+                <%= n.created.d == 1 ? 'Hace'+n.created.d+' Día': n.created.d == 0 ? 'Hoy': 'Hace'+n.created.d+' Días'%>
+              <% } %>
+            </span>
+           <% }else{ %>
+            <!-- si hay comentarios -->
+            <a href="/profile/<%=n.lastUser%>"><%= n.lastUser %></a>
+            <br>
+            <span>
+              <% if (n.lastComment.y != 0) { %>
+                    <%= n.lastComment.y == 1 ? 'Hace'+n.lastComment.y+' Año': 'Hace'+n.lastComment.y+' Años'%>
+                 <% }else if(n.lastComment.mo != 0){ %>
+                    <%= n.lastComment.mo == 1 ? 'Hace'+n.lastComment.mo+' Mes': 'Hace'+n.lastComment.mo+' Meses'%>
+                  <% }else{ %>
+                    <%= n.lastComment.d == 1 ? 'Hace'+n.lastComment.d+' Día': n.lastComment.d == 0 ? 'Hoy': 'Hace'+n.lastComment.d+' Días'%>
+                  <% } %>
+            </span>
+            <% } %>
+          </td>
+          <td class="resp">
+            <p><%= n.comments%></p>
+          </td>
+          <td class="votos">
+            <p><%= n.likes%></p>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+   <% }else{ %>
+    <div class="nopost">
+      <h1>Todavía no hay ningun post</h1>
+    </div>
+  <% } %>
   </section>
 </main>
