@@ -65,6 +65,22 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
   });
 })
 
+/* GET - post */
+router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
+  sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.foro}`);
+
+
+  res.render("post",{
+    post: true,
+    session: req.session,
+    data: {
+      foro: sql.res[0].name,
+      id: req.params.id,
+      categoria: sql.res[0].name
+    }
+  });
+})
+
 /* GET - crear post */
 router.get('/nuevo_post/:id', [cehckSession,userArea], async (req,res) => {
   sql = await dbfind(`SELECT name FROM foros WHERE id=${req.params.id}`)

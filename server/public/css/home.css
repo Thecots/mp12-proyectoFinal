@@ -53,10 +53,11 @@ h1,h2,h3{
 
 .foro > div:hover{
   background-color: rgb(238, 238, 238);
+  transform: scale(1.01);
 }
 
 .foro > div:active{
-  transform: scale(0.99);
+  transform: scale(0.999);
 }
 
 .foro div .img{

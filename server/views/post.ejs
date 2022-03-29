@@ -1,0 +1,10 @@
+<main>
+  <div class="header">
+    <h1><%=data.foro%></h1><br>
+   <% if (session.id) { %>
+    <a class="button" href="/nuevo_post/<%= data.id%>">Responder / Comentar</a>
+   <% } %>
+  </div>
+  <section>
+  </section>
+</main>
