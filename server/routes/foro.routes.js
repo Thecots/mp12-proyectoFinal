@@ -67,21 +67,35 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
 
 /* GET - post */
 router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
+  sql = await dbfind(`UPDATE posts SET views = views+1 WHERE id = ${req.params.id}`);
   sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.foro}`);
+  sql3 = await dbfind(`SELECT id FROM postslikes WHERE post = ${req.params.id} AND user = ${req.session.id}`);
   sql2 = await dbfind(`
   SELECT
   posts.id,
   posts.title,
   posts.content,
   posts.created,
+  posts.views,
   u.picture,
+  COUNT(DISTINCT l.id) likes,
+  COUNT(DISTINCT c.id) countcoment,
   u.username
   FROM posts
   LEFT JOIN users u ON posts.user = u.id
+  LEFT JOIN comments c ON posts.id = c.post
+  LEFT JOIN postslikes l ON posts.id = l.post
   WHERE posts.id = ${req.params.id}
   `);
 
-
+  sql2.res.map(n => {
+    creado = moment(n.created)
+    hoy = moment(new Date)
+    n.created = {
+    d: hoy.diff(creado,'days'),
+    mo: hoy.diff(creado,'months'),
+    y: hoy.diff(creado,'years')
+  }})
   res.render("post",{
     post: true,
     session: req.session,
@@ -89,10 +103,27 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
       foro: sql.res[0].name,
       foroid: req.params.foro,
       id: req.params.id,
-      post: sql2.res[0]
+      post: sql2.res[0],
+      like: sql3.res
     }
   });
 })
+
+
+/* GET - like post */
+router.get('/like/:foro/:id', [cehckSession], async (req,res) => {
+  postid = req.params.id;
+  foro = req.params.foro;
+  user = req.session.id;
+  sql = await dbfind(`SELECT id FROM postslikes WHERE post = ${postid} AND user = ${user}`);
+  if(sql.res.length === 0){
+    sql = await dbfind(`INSERT INTO postslikes(post,user) VALUES (${postid},${user})`);
+  }else{
+    sql = await dbfind(`DELETE FROM postslikes WHERE post = ${postid} AND user = ${user}`);
+  }
+  res.redirect('/foro/tema/'+foro+'/'+postid);
+});
+
 
 /* GET - crear post */
 router.get('/nuevo_post/:id', [cehckSession,userArea], async (req,res) => {

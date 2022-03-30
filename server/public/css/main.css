@@ -17,6 +17,11 @@ main{
   padding-top: 0 !important;
 }
 
+main > .header h1,
+main.crearpost h1{
+  margin: 0 !important;
+}
+
 /* SCROLLBAR */
 /* width */
 ::-webkit-scrollbar {
