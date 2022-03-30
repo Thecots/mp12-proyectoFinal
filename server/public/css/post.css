@@ -43,6 +43,76 @@ section{
 section.postBox{
   margin-top: 25px;
   padding: 5px;
-  border-top: 1px solid rgb(129, 129, 129);
-  border-radius: 3px;
+  border-top: 1px solid rgb(187, 187, 187);
+  border-top-style: dotted;
+}
+
+section.postBox .content .titlePost_{
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+section.postBox .content{
+  padding: 10px;
+}
+
+section.postBox .content pre{
+  margin-left: 0 !important;
+}
+
+section.postBox .header{
+  display: flex;
+  justify-content: space-between;
+}
+
+section.postBox .header .info{
+  padding: 10px;
+}
+section.postBox .header .info p{
+  font-size: 11px;
+  text-transform: uppercase;
+  color: rgb(104, 104, 104);
+  font-weight: 500;
+}
+
+section.postBox .header .profile{
+  display: grid;
+  grid-template-areas: 
+  "img a"
+  "img div"
+  ;
+  align-items: center;
+}
+
+.header .profile img{
+  grid-area: img;
+  padding: 10px;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.header .profile a{
+  text-decoration: none;
+  color: black;
+}
+
+.header .profile a:hover{
+  text-decoration: underline;
+}
+
+.header .profile > a{
+  grid-area: a;
+  align-self: flex-end;
+  color: rgb(255, 45, 8);
+  margin-bottom: 2px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.header .profile div{
+  align-self: flex-start;
+  grid-area: div;
+  margin-top: 2px;
+  font-size: 15px;
+  font-weight: 600;
 }

@@ -1,17 +1,25 @@
 <main>
   <div class="header">
     <h1><%=data.foro%></h1><br>
-   <% if (session.id) { %>
-    <a class="button" href="/nuevo_post/<%= data.id%>">Responder / Comentar</a>
-   <% } %>
+    <a class="button" href="/nuevo_post/<%= data.id%>/">Responder / Comentar</a>
   </div>
   <section class="postBox">
     <div class="header">
       <div class="profile">
-        
+        <img src="<%= data.post.picture %>" alt="">
+        <a href="/foros/<%= data.foroid%>/1/"><%= data.foro %></a>
+        <div>
+          <a href="/profile/<%= data.post.username %>/"><%= data.post.username %></a>
+        </div>
+      </div>
+      <div class="info">
+        <p>HACE 2 Días / RESPUESTAS: 0 / LECTURAS: 100</p>
       </div>
     </div>
+    <div class="content">
+      <h1 class="titlePost_"><%= data.post.title %></h1>
     <%- data.post.content%>  
+    </div>
   </section>
 </main>
 <script>

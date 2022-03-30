@@ -73,8 +73,11 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
   posts.id,
   posts.title,
   posts.content,
-  posts.created
+  posts.created,
+  u.picture,
+  u.username
   FROM posts
+  LEFT JOIN users u ON posts.user = u.id
   WHERE posts.id = ${req.params.id}
   `);
 

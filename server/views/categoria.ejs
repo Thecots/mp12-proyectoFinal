@@ -1,9 +1,7 @@
 <main>
   <div class="header">
     <h1><%=data.foro%></h1><br>
-   <% if (session.id) { %>
     <a class="button" href="/nuevo_post/<%= data.id%>">Crear post</a>
-   <% } %>
   </div>
   <section>
     <% if (data.post.length != 0) { %>

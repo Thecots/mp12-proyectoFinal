@@ -37,6 +37,7 @@ CREATE TABLE posts(
   title VARCHAR(100) NOT NULL,
   content LONGTEXT NOT NULL,
   created DATETIME default current_timestamp,
+  views INT default 0,
   foro INT NOT NULL,
   user INT NOT NULL,
   FOREIGN KEY fk_foro(foro) REFERENCES foros(id),
