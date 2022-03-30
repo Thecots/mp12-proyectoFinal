@@ -36,4 +36,21 @@
       </ul>
     </nav>
   </section>
+  <section class="navigation">
+    <a href="/">Inicio</a>
+    <% if (typeof(categoria) != "undefined"){%>
+      / <a href="/foros/<%=data.id%>/1/"><%=data.foro%></a>
+    <% }%>
+    <% if (typeof(crearpost) != "undefined"){%>
+      / <a href="/foros/<%=data.id%>/1/"><%= data.foro%></a>
+      / <a href="//nuevo_post/<%=data.id%>/">crear post</a>
+    <% }%>
+    <% if (typeof(post) != "undefined"){%>
+      / <a href="/foros/<%=data.foroid%>/1/"><%= data.foro%></a>
+      / <a href="/foro/tema/<%=data.foroid%>/<%=data.id%>/"><%= data.post.title %></a>
+    <% }%>
+    <% if (typeof(Perfil) != "undefined"){%>
+      / <a href="/foros/<%=data.id%>/1/"><%= 1 %></a>
+    <% }%>    
+  </section>
 <% } %>

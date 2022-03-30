@@ -149,6 +149,7 @@ header .sessionon nav a:hover{
 /* menú */
 
 section.menu{
+  font-size: 16px;
   height: 30px;
   width: 100%;
   background-color: royalblue;
@@ -174,4 +175,28 @@ section.menu nav ul a{
   font-weight: 500;
   padding: 0 10px;
   border-right: 1px solid black;
+}
+
+section.navigation{
+  max-width: 100%;
+  width: 1500px;
+  padding: 10px;
+  margin: 0 auto;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-top: 10px;
+}
+
+section.navigation a{
+  text-decoration: none;
+  font-size: 13px;
+  color: rgb(85, 85, 85);
+  font-weight: 500;
+}
+
+section.navigation a:hover{
+  text-decoration: underline;
+  color: black;
 }

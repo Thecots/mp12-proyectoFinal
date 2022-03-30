@@ -68,6 +68,15 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
 /* GET - post */
 router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
   sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.foro}`);
+  sql2 = await dbfind(`
+  SELECT
+  posts.id,
+  posts.title,
+  posts.content,
+  posts.created
+  FROM posts
+  WHERE posts.id = ${req.params.id}
+  `);
 
 
   res.render("post",{
@@ -75,8 +84,9 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
     session: req.session,
     data: {
       foro: sql.res[0].name,
+      foroid: req.params.foro,
       id: req.params.id,
-      categoria: sql.res[0].name
+      post: sql2.res[0]
     }
   });
 })
@@ -92,7 +102,7 @@ router.get('/nuevo_post/:id', [cehckSession,userArea], async (req,res) => {
     session: req.session,
     data: {
       id: req.params.id,
-      categoria: sql.res[0].name
+      foro: sql.res[0].name
     }
   });
 })
