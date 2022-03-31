@@ -145,3 +145,23 @@ section.postBox .footer img:active{
   font-size: 15px;
   font-weight: 600;
 }
+
+.header .profile div span{
+  font-size: 13px;
+  color: #b3b3b3;
+  margin-left: 5px;
+  transform: translateY(-2px);
+}
+
+
+
+.header .profile div span img{
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border: none;
+  filter: invert(89%) sepia(8%) saturate(7%) hue-rotate(358deg) brightness(82%) contrast(85%);
+  transform: translateY(2px);
+
+
+}

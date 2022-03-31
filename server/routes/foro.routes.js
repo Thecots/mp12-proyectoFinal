@@ -77,6 +77,8 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
   posts.content,
   posts.created,
   posts.views,
+  (SELECT count(id) FROM comments c WHERE c.user = posts.user) as commentNum,
+  (SELECT count(id) FROM posts c WHERE c.user = posts.user) as postNum,
   u.picture,
   COUNT(DISTINCT l.id) likes,
   COUNT(DISTINCT c.id) countcoment,

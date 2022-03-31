@@ -10,6 +10,10 @@
         <a href="/foros/<%= data.foroid%>/1/"><%= data.foro %></a>
         <div>
           <a href="/profile/<%= data.post.username %>/"><%= data.post.username %></a>
+          <span>
+            <img src="https://img.icons8.com/ios-glyphs/60/000000/comments.png"/>
+            <%=data.post.commentNum+data.post.postNum%>
+          </span>
         </div>
       </div>
       <div class="info">
