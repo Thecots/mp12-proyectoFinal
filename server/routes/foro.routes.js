@@ -90,6 +90,10 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
   WHERE posts.id = ${req.params.id}
   `);
 
+  if(!sql3.ok){
+    sql3.res = 0;
+  }
+
   sql2.res.map(n => {
     creado = moment(n.created)
     hoy = moment(new Date)
