@@ -30,7 +30,7 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
   LEFT JOIN comments c ON posts.id = c.post
   WHERE posts.foro = ${req.params.id}
   GROUP BY posts.id
-  ORDER BY lastComment
+  ORDER BY IF(ISNULL(lastComment), posts.created, lastComment) DESC
   LIMIT ${start},${end};
   `);
   if(sql2.res.length >= 1){
@@ -89,6 +89,8 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
   LEFT JOIN postslikes l ON posts.id = l.post
   WHERE posts.id = ${req.params.id}
   `);
+
+  
 
   if(!sql3.ok){
     sql3.res = 0;
