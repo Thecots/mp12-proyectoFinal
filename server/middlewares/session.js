@@ -23,7 +23,7 @@ const userArea = (req,res,next) =>{
  try {
   jwt.verify(req.cookies.session, process.env.SEED, (err, decoded) => {
     if(err) return res.redirect('/')
-    ;
+    
     next()
   });
  } catch (error) {

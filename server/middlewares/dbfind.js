@@ -2,9 +2,9 @@ const mysql = require('mysql');
 
 let con = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "root",
-  database: "pkmonkey"
+  user: 'root',
+  password: '',
+  database: 'pkmonkey'
 });
 
 function dbfind(sql){

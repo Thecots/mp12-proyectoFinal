@@ -19,11 +19,17 @@
       <div class="info">
         <p>
           <% if (data.post.created.y != 0) { %>
-            <%= data.post.created.y == 1 ? 'Hace'+data.post.created.y+' Año': 'Hace'+data.post.created.y+' Años'%>
+            <%= data.post.created.y == 1 ? 'Hace '+data.post.created.y+' Año': 'Hace '+data.post.created.y+' Años'%>
          <% }else if(data.post.created.mo != 0){ %>
-            <%= data.post.created.mo == 1 ? 'Hace'+data.post.created.mo+' Mes': 'Hace'+data.post.created.mo+' Meses'%>
-          <% }else{ %>
-            <%= data.post.created.d == 1 ? 'Hace'+data.post.created.d+' Día': data.post.created.d == 0 ? 'Hoy': 'Hace'+data.post.created.d+' Días'%>
+            <%= data.post.created.mo == 1 ? 'Hace '+data.post.created.mo+' Mes': 'Hace '+data.post.created.mo+' Meses'%>
+          <% }else if(data.post.created.d){ %>
+            <%= data.post.created.d == 1 ? 'Hace '+data.post.created.d+' Día' : 'Hace '+data.post.created.d+' Días'%>
+          <% }else if(data.post.created.h){ %>
+            <%= data.post.created.h == 1 ? 'Hace '+data.post.created.h+' Hora' : 'Hace '+data.post.created.h+' Horas'%>
+          <% }else if(data.post.created.m){ %>
+            <%= data.post.created.m == 1 ? 'Hace '+data.post.created.m+' Minuto' : 'Hace '+data.post.created.m+' Minutos'%>
+          <% }else if(data.post.created.s){ %>
+            <%= data.post.created.s == 1 ? 'Hace '+data.post.created.s+' Segundo' : 'Hace '+data.post.created.s+' Segundos'%>
           <% } %>
           / RESPUESTAS: <%=data.post.countcoment%> / LECTURAS: <%= data.post.views%></p>
       </div>
@@ -43,6 +49,54 @@
       >
       <p><%=data.post.likes%></p>
     </div>
+  </section>
+  <div class="commentsBox">
+   <% data.com.forEach((n,i) => { %>
+    <div class="comment_">
+      <div class="header">
+        <div class="user">
+          <img src="<%= n.picture %>" onclick="window.location.href = '/profile/<%= n.username %>/' ">
+          <a href="/profile/<%= n.username %>/"><%= n.username %></a>
+          <span>
+            <img src="https://img.icons8.com/ios-glyphs/60/000000/comments.png"/>
+            <%=n.commentNum+n.postNum%>
+          </span>
+        </div>
+        <div class="minfo">
+          <% if (n.created.y != 0) { %>
+            <%= n.created.y == 1 ? 'Hace '+n.created.y+' Año': 'Hace '+n.created.y+' Años'%>
+         <% }else if(n.created.mo != 0){ %>
+            <%= n.created.mo == 1 ? 'Hace '+n.created.mo+' Mes': 'Hace '+n.created.mo+' Meses'%>
+          <% }else if(n.created.d){ %>
+            <%= n.created.d == 1 ? 'Hace '+n.created.d+' Día' : 'Hace '+n.created.d+' Días'%>
+          <% }else if(n.created.h){ %>
+            <%= n.created.h == 1 ? 'Hace '+n.created.h+' Hora' : 'Hace '+n.created.h+' Horas'%>
+          <% }else if(n.created.m){ %>
+            <%= n.created.m == 1 ? 'Hace '+n.created.m+' Minuto' : 'Hace '+n.created.m+' Minutos'%>
+          <% }else if(n.created.s){ %>
+            <%= n.created.s == 1 ? 'Hace '+n.created.s+' Segundo' : 'Hace '+n.created.s+' Segundos'%>
+          <% } %>
+        </div>
+      </div>
+      <div class="content">
+        <%= n.coment %>
+      </div>
+      <div class="footer">
+        <img src="https://img.icons8.com/cotton/64/000000/facebook-like--v2.png"
+        <% if (typeof(session) != 'undefined' && session.ok) { %>
+          onclick="window.location.href = '/like/<%=data.foroid%>/<%=data.id%>'"  
+        <% } %>
+        <% if (data.userlikescom && data.userlikescom.find(d => d == n.id) != undefined) { %>
+          class="imlikeon"
+        <% } %>
+        >
+        <p><%=n.likes%></p>
+      </div>
+    </div>
+   <% }) %>
+  </div>
+  <section class="footer">
+    <a class="button" href="/nuevo_post/<%= data.id%>/">Responder / Comentar</a>
   </section>
 </main>
 <script>

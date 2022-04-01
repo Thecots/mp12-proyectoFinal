@@ -30,42 +30,41 @@
                 <br>
                 <span>
                   <% if (n.created.y != 0) { %>
-                    <%= n.created.y == 1 ? 'Hace'+n.created.y+' Año': 'Hace'+n.created.y+' Años'%>
+                    <%= n.created.y == 1 ? 'Hace '+n.created.y+' Año': 'Hace '+n.created.y+' Años'%>
                  <% }else if(n.created.mo != 0){ %>
-                    <%= n.created.mo == 1 ? 'Hace'+n.created.mo+' Mes': 'Hace'+n.created.mo+' Meses'%>
-                  <% }else{ %>
-                    <%= n.created.d == 1 ? 'Hace'+n.created.d+' Día': n.created.d == 0 ? 'Hoy': 'Hace'+n.created.d+' Días'%>
+                    <%= n.created.mo == 1 ? 'Hace '+n.created.mo+' Mes': 'Hace '+n.created.mo+' Meses'%>
+                  <% }else if(n.created.d){ %>
+                    <%= n.created.d == 1 ? 'Hace '+n.created.d+' Día' : 'Hace '+n.created.d+' Días'%>
+                  <% }else if(n.created.h){ %>
+                    <%= n.created.h == 1 ? 'Hace '+n.created.h+' Hora' : 'Hace '+n.created.h+' Horas'%>
+                  <% }else if(n.created.m){ %>
+                    <%= n.created.m == 1 ? 'Hace '+n.created.m+' Minuto' : 'Hace '+n.created.m+' Minutos'%>
+                  <% }else if(n.created.s){ %>
+                    <%= n.created.s == 1 ? 'Hace '+n.created.s+' Segundo' : 'Hace '+n.created.s+' Segundos'%>
                   <% } %>
                 </span>
               </div>     
           </td>
           <td class="umensaje">
-           <% if (n.lastComment === null) { %>
-            <!-- no hay comentarios -->
-            <a href="/profile/<%=n.creatorUsername%>"><%= n.creatorUsername %></a><br>
-            <span>
-              <% if (n.created.y != 0) { %>
-                <%= n.created.y == 1 ? 'Hace'+n.created.y+' Año': 'Hace'+n.created.y+' Años'%>
-             <% }else if(n.created.mo != 0){ %>
-                <%= n.created.mo == 1 ? 'Hace'+n.created.mo+' Mes': 'Hace'+n.created.mo+' Meses'%>
-              <% }else{ %>
-                <%= n.created.d == 1 ? 'Hace'+n.created.d+' Día': n.created.d == 0 ? 'Hoy': 'Hace'+n.created.d+' Días'%>
-              <% } %>
-            </span>
-           <% }else{ %>
+          
             <!-- si hay comentarios -->
             <a href="/profile/<%=n.lastUser%>"><%= n.lastUser %></a>
             <br>
             <span>
-              <% if (n.lastComment.y != 0) { %>
-                    <%= n.lastComment.y == 1 ? 'Hace'+n.lastComment.y+' Año': 'Hace'+n.lastComment.y+' Años'%>
-                 <% }else if(n.lastComment.mo != 0){ %>
-                    <%= n.lastComment.mo == 1 ? 'Hace'+n.lastComment.mo+' Mes': 'Hace'+n.lastComment.mo+' Meses'%>
-                  <% }else{ %>
-                    <%= n.lastComment.d == 1 ? 'Hace'+n.lastComment.d+' Día': n.lastComment.d == 0 ? 'Hoy': 'Hace'+n.lastComment.d+' Días'%>
-                  <% } %>
+             <% if (n.created.y != 0) { %>
+                <%= n.created.y == 1 ? 'Hace '+n.created.y+' Año': 'Hace '+n.created.y+' Años'%>
+             <% }else if(n.created.mo != 0){ %>
+                <%= n.created.mo == 1 ? 'Hace '+n.created.mo+' Mes': 'Hace '+n.created.mo+' Meses'%>
+              <% }else if(n.created.d){ %>
+                <%= n.created.d == 1 ? 'Hace '+n.created.d+' Día' : 'Hace '+n.created.d+' Días'%>
+              <% }else if(n.created.h){ %>
+                <%= n.created.h == 1 ? 'Hace '+n.created.h+' Hora' : 'Hace '+n.created.h+' Horas'%>
+              <% }else if(n.created.m){ %>
+                <%= n.created.m == 1 ? 'Hace '+n.created.m+' Minuto' : 'Hace '+n.created.m+' Minutos'%>
+              <% }else if(n.created.s){ %>
+                <%= n.created.s == 1 ? 'Hace '+n.created.s+' Segundo' : 'Hace '+n.created.s+' Segundos'%>
+              <% } %>
             </span>
-            <% } %>
           </td>
           <td class="resp">
             <p><%= n.comments%></p>

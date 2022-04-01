@@ -67,7 +67,8 @@ section.postBox .header{
 section.postBox .header .info{
   padding: 10px;
 }
-section.postBox .header .info p{
+section.postBox .header .info p,
+.commentsBox .header .minfo{
   font-size: 11px;
   text-transform: uppercase;
   color: rgb(104, 104, 104);
@@ -83,18 +84,21 @@ section.postBox .header .profile{
   align-items: center;
 }
 
-section.postBox .footer{
+section.postBox .footer,
+.commentsBox .footer{
   margin: 10px 0;
   display: flex;
   align-items: center;
 }
 
-section.postBox .footer p{
+section.postBox .footer p,
+.commentsBox .footer p{
   transform: translateY(2px);
   font-size: 30px;
 }
 
-section.postBox .footer img{
+section.postBox .footer img,
+.commentsBox .footer img{
   width: 50px;
   height: 50px;
   padding: 5px;
@@ -121,12 +125,14 @@ section.postBox .footer img:active{
   object-fit: cover;
 }
 
-.header .profile a{
+.header .profile a,
+.commentsBox .header .user a{
   text-decoration: none;
   color: black;
 }
 
-.header .profile a:hover{
+.header .profile a:hover,
+.commentsBox .header .user a:hover{
   text-decoration: underline;
 }
 
@@ -146,7 +152,8 @@ section.postBox .footer img:active{
   font-weight: 600;
 }
 
-.header .profile div span{
+.header .profile div span,
+.commentsBox .header .user span{
   font-size: 13px;
   color: #b3b3b3;
   margin-left: 5px;
@@ -155,7 +162,8 @@ section.postBox .footer img:active{
 
 
 
-.header .profile div span img{
+.header .profile div span img,
+.commentsBox .header .user span img{
   width: 14px;
   height: 14px;
   padding: 0;
@@ -164,4 +172,60 @@ section.postBox .footer img:active{
   transform: translateY(2px);
 
 
+}
+
+
+/* comments */
+
+.commentsBox{
+  width: 100%;
+  padding: 10px;
+}
+
+.comment_{
+  margin-bottom: 20px;
+}
+
+.commentsBox .header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(234, 234, 234);
+  padding: 2px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.commentsBox .header .user{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.commentsBox .header .user img{
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.commentsBox .header .user a{
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.commentsBox .header .minfo{
+  margin-right: 15px;
+}
+
+.commentsBox .content{
+  padding: 10px;
+}
+
+/* footer */
+section.footer{
+  margin-top: 15px;
+  margin-bottom:20px;
 }

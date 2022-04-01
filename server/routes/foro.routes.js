@@ -35,20 +35,29 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
   `);
   if(sql2.res.length >= 1){
     sql2.res.map(n => {
-      creado = moment(n.created)
+      n.lastUser = n.lastUser == null ? n.creatorUsername : n.lastUser
       hoy = moment(new Date)
+      creado = moment(n.created)
       n.created = {
+        s: hoy.diff(creado,'seconds'),
+        m: hoy.diff(creado,'minutes'),
+        h: hoy.diff(creado,'hours'),
         d: hoy.diff(creado,'days'),
         mo: hoy.diff(creado,'months'),
         y: hoy.diff(creado,'years')
-      };
+      }
       if(n.lastComment != null){
         creado = moment(n.lastComment)
         n.lastComment = {
+          s: hoy.diff(creado,'seconds'),
+          m: hoy.diff(creado,'minutes'),
+          h: hoy.diff(creado,'hours'),
           d: hoy.diff(creado,'days'),
           mo: hoy.diff(creado,'months'),
           y: hoy.diff(creado,'years')
-        };
+        } 
+      }else{
+        n.lastComment = n.created;
       }
     });
   }
@@ -89,8 +98,47 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
   LEFT JOIN postslikes l ON posts.id = l.post
   WHERE posts.id = ${req.params.id}
   `);
+  com = await dbfind(`
+  SELECT
+  comments.id,
+  u.username,
+  u.picture,
+  COUNT(DISTINCT le.id) likes,
+  comments.coment,
+  (SELECT count(id) FROM comments c WHERE c.user = comments.user) as commentNum,
+  (SELECT count(id) FROM posts c WHERE c.user = comments.user) as postNum,
+  comments.created
+  FROM comments
+  LEFT JOIN comentslikes le ON le.comment = comments.post
+  LEFT JOIN users u ON comments.user = u.id
+  LEFT JOIN comments c ON comments.user = c.post
+  LEFT JOIN postslikes l ON comments.user = l.post
+  WHERE comments.post = ${req.params.id}
+  GROUP BY comments.id
+  `)
 
-  
+  userlikescom = false
+  if(req.session.ok){
+    userlikescom = dbfind(`
+    SELECT
+    c.comment
+    FROM comentslikes as c
+    WHERE c.user = ${req.session.id}
+    `)
+  }
+
+  com.res.map(n => {
+    hoy = moment(new Date)
+    creado = moment(n.created)
+    n.created = {
+      s: hoy.diff(creado,'seconds'),
+      m: hoy.diff(creado,'minutes'),
+      h: hoy.diff(creado,'hours'),
+      d: hoy.diff(creado,'days'),
+      mo: hoy.diff(creado,'months'),
+      y: hoy.diff(creado,'years')
+    }
+  });
 
   if(!sql3.ok){
     sql3.res = 0;
@@ -100,9 +148,12 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
     creado = moment(n.created)
     hoy = moment(new Date)
     n.created = {
-    d: hoy.diff(creado,'days'),
-    mo: hoy.diff(creado,'months'),
-    y: hoy.diff(creado,'years')
+      s: hoy.diff(creado,'seconds'),
+      m: hoy.diff(creado,'minutes'),
+      h: hoy.diff(creado,'hours'),
+      d: hoy.diff(creado,'days'),
+      mo: hoy.diff(creado,'months'),
+      y: hoy.diff(creado,'years')
   }})
   res.render("post",{
     post: true,
@@ -112,7 +163,9 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
       foroid: req.params.foro,
       id: req.params.id,
       post: sql2.res[0],
-      like: sql3.res
+      like: sql3.res,
+      com: com.res,
+      userlikescom: userlikescom.res
     }
   });
 })
