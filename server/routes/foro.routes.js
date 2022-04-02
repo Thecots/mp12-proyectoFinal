@@ -11,7 +11,7 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
   end = 10;
   start = (req.params.page*end)- end;
   sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.id}`);
-  count = await dbfind(`SELECT count(id) elem FROM posts WHERE foro = ${req.params.id}`);
+  counts = await dbfind(`SELECT count(id) elem FROM posts WHERE foro = ${req.params.id}`);
   sql2 = await dbfind(`
   SELECT
   posts.id id,
@@ -55,6 +55,7 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
           mo: hoy.diff(creado,'months'),
           y: hoy.diff(creado,'years')
         } 
+        console.log( n.lastComment );
       }else{
         n.lastComment = n.created;
       }
@@ -68,14 +69,19 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
       page: req.params.page,
       foro: sql.res[0].name,
       post: sql2.res,
-      count: count.res[0].elem,
+      count: counts.res[0].elem == 0 ? 1 : counts.res[0].elem,
       end
     }
   });
 })
 
 /* GET - post */
-router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
+router.get('/foro/tema/:foro/:id/:page/', [cehckSession], async (req,res) => {
+  req.params.page = req.params.page >= 1 ? req.params.page : 1;
+  end = 5;
+  start = (req.params.page*end)- end;
+  counts = await dbfind(`SELECT count(id) count FROM comments WHERE post = ${req.params.id}`);
+  sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.id}`);
   sql = await dbfind(`UPDATE posts SET views = views+1 WHERE id = ${req.params.id}`);
   sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.foro}`);
   sql3 = await dbfind(`SELECT id FROM postslikes WHERE post = ${req.params.id} AND user = ${req.session.id}`);
@@ -115,6 +121,7 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
   LEFT JOIN postslikes l ON comments.user = l.post
   WHERE comments.post = ${req.params.id}
   GROUP BY comments.id
+  LIMIT ${start},${end};
   `)
   userlikescom = false
   if(req.session.ok){
@@ -164,7 +171,10 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
       post: sql2.res[0],
       like: sql3.res,
       com: com.res,
-      userlikescom: userlikescom.res
+      userlikescom: userlikescom.res,
+      page: req.params.page,
+      count: counts.res[0].count == 0 ? 1 : counts.res[0].count,
+      end
     }
   });
 })
@@ -236,6 +246,42 @@ router.post('/comment/like/', [cehckSession, userArea], async (req,res) => {
   res.json({ok:false})
  }
 });
+
+
+
+
+
+/* GET - crear comentario */
+router.get('/comentar_post/:id', [cehckSession,userArea], async (req,res) => {
+  sql = await dbfind(`
+  SELECT 
+  posts.title posttitle,
+  posts.id postid,
+  posts.foro foroid,
+  posts.title title,
+  c.name foro
+  FROM posts
+  LEFT JOIN foros c ON c.id = posts.foro
+  WHERE posts.id=${req.params.id}`)
+  if(!sql.res){
+    return res.sendFile(path.join(__dirname, '../public/html/404/404.html'));
+  }
+  
+  res.render("crearcomentario",{
+    crearcomentario: true,
+    session: req.session,
+    data: sql.res[0]
+  });
+})
+
+/* POST - guardar comentario */
+router.post('/comentar_post', [cehckSession, userArea], async (req,res) => {
+  c = req.body.content.replaceAll('`','"').replaceAll("'",'"')
+  sql = await dbfind(`INSERT INTO comments(coment,post,user)
+                      VALUES('${c}',${req.body.postid},${req.session.id})`);
+  res.send(JSON.stringify({ok: true}))
+});
+
 
 module.exports = router;
 

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Project Monkey</title>
+    <link rel="icon" href="https://img.icons8.com/ios-filled/100/000000/gorilla.png">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/paginator.css">
@@ -21,7 +22,7 @@
     <% if (typeof(home) != "undefined") { %>
         <link rel="stylesheet" href="/css/home.css">
     <% } %>
-    <% if (typeof(crearpost) != "undefined") { %>
+    <% if (typeof(crearpost) != "undefined" || typeof(crearcomentario) != "undefined") { %>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/crearpost.css">
     <% } %>

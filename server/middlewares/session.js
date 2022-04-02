@@ -32,6 +32,18 @@ const userArea = (req,res,next) =>{
 }
 
 
+
+/* (null,3,'DiEgoSnNiPeR16','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK','/img/defaultuser.png'); */
+
+
+
+
+/* 
+for(let i = 0; i < nicknames.length; i++){
+  console.log(`(3,'${nicknames[i].replace( /\s/g, '')}','$2b$10$P8zGhlo4gM0XbGwVWqXPs.1cX4sY0WdiNofAJQKG4Dhiw/vOC1I1S'),`);
+} */
+
+
 module.exports = {
   cehckSession,
   userArea

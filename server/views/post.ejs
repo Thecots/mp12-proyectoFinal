@@ -1,7 +1,19 @@
 <main>
   <div class="header">
     <h1><%=data.foro%></h1><br>
-    <a class="button" href="/nuevo_post/<%= data.id%>/">Responder / Comentar</a>
+  </div>
+  <div class="footerPag onthetop">
+    <a class="button" style="margin: 0" href="/comentar_post/<%= data.id%>/" >Responder / Comentar</a>
+    <div id="pagination">
+      <div class="before
+      <% if (data.page == 1) { %> dissabled" <% } else{ %>" onclick="window.location.href = '/foro/tema/<%= data.foroid %>/<%=data.id%>/<%=parseInt(data.page)-1%>/'"<% } %> 
+      ><img src="https://img.icons8.com/metro/52/000000/chevron-left.png"/></div>
+      <p>Página <b><%=data.page%></b> de <b><%=Math.ceil(data.count/data.end)%></b></p>
+      <div class="next
+      <% if (data.page == Math.ceil(data.count/data.end)) { %> dissabled"
+      <% } else{ %>" onclick="window.location.href = '/foro/tema/<%= data.foroid %>/<%=data.id%>/<%=parseInt(data.page)+1%>/'"<% } %> 
+      ><img src="https://img.icons8.com/metro/52/000000/chevron-left.png"/></div>
+    </div>
   </div>
   <section class="postBox">
     <div class="header">
@@ -79,7 +91,7 @@
         </div>
       </div>
       <div class="content">
-        <%= n.coment %>
+        <%- n.coment %>
       </div>
       <div class="footer">
         <img src="https://img.icons8.com/cotton/64/000000/facebook-like--v2.png"
@@ -95,9 +107,19 @@
     </div>
    <% }) %>
   </div>
-  <section class="footer">
-    <a class="button" href="/nuevo_post/<%= data.id%>/">Responder / Comentar</a>
-  </section>
+  <div class="footerPag onthetop">
+    <a class="button" style="margin: 0" href="/comentar_post/<%= data.id%>/" >Responder / Comentar</a>
+    <div id="pagination">
+      <div class="before
+      <% if (data.page == 1) { %> dissabled" <% } else{ %>" onclick="window.location.href = '/foro/tema/<%= data.foroid %>/<%=data.id%>/<%=parseInt(data.page)-1%>/'"<% } %> 
+      ><img src="https://img.icons8.com/metro/52/000000/chevron-left.png"/></div>
+      <p>Página <b><%=data.page%></b> de <b><%=Math.ceil(data.count/data.end) %></b></p>
+      <div class="next
+      <% if (data.page == Math.ceil(data.count/data.end)) { %> dissabled"
+      <% } else{ %>" onclick="window.location.href = '/foro/tema/<%= data.foroid %>/<%=data.id%>/<%=parseInt(data.page)+1%>/'"<% } %> 
+      ><img src="https://img.icons8.com/metro/52/000000/chevron-left.png"/></div>
+    </div>
+  </div>
 </main>
 <script>
   function postLike(e){
