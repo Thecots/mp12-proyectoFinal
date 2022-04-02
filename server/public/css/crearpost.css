@@ -52,6 +52,7 @@ main .title{
 
 [data-tiny-editor] {
   height: 400px;
+  font-family: sans-serif !important;
   overflow-x: hidden !important;
 
 }
