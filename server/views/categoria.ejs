@@ -1,7 +1,19 @@
 <main>
   <div class="header">
-    <h1><%=data.foro%></h1><br>
+    <h1><%=data.foro%></h1>
+  </div>
+  <div class="footer onthetop">
     <a class="button" href="/nuevo_post/<%= data.id%>">Crear post</a>
+    <div id="pagination">
+      <div class="before
+      <% if (data.page == 1) { %> dissabled" <% } else{ %>" onclick="window.location.href = '/foros/<%=data.id%>/<%=parseInt(data.page)-1%>/'"<% } %> 
+      ><img src="https://img.icons8.com/metro/52/000000/chevron-left.png"/></div>
+      <p>Página <b><%=data.page%></b> de <b><%=Math.ceil(data.count/data.end)%></b></p>
+      <div class="next
+      <% if (data.page == Math.ceil(data.count/data.end)) { %> dissabled"
+      <% } else{ %>" onclick="window.location.href = '/foros/<%=data.id%>/<%=parseInt(data.page)+1%>/'"<% } %> 
+      ><img src="https://img.icons8.com/metro/52/000000/chevron-left.png"/></div>
+    </div>
   </div>
   <section>
     <% if (data.post.length != 0) { %>
@@ -80,8 +92,25 @@
     </table>
    <% }else{ %>
     <div class="nopost">
-      <h1>Todavía no hay ningun post</h1>
+     <% if (data.page > Math.ceil(data.count/data.end)) { %>
+        <h1>No hay post en está página</h1>
+     <% }else{ %>
+       <h1>Todavía no hay ningun post</h1>
+      <% } %> 
     </div>
   <% } %>
+  <div class="footer">
+    <a class="button" href="/nuevo_post/<%= data.id%>">Crear post</a>
+    <div id="pagination">
+      <div class="before
+      <% if (data.page == 1) { %> dissabled" <% } else{ %>" onclick="window.location.href = '/foros/<%=data.id%>/<%=parseInt(data.page)-1%>/'"<% } %> 
+      ><img src="https://img.icons8.com/metro/52/000000/chevron-left.png"/></div>
+      <p>Página <b><%=data.page%></b> de <b><%=Math.ceil(data.count/data.end)%></b></p>
+      <div class="next
+      <% if (data.page == Math.ceil(data.count/data.end)) { %> dissabled"
+      <% } else{ %>" onclick="window.location.href = '/foros/<%=data.id%>/<%=parseInt(data.page)+1%>/'"<% } %> 
+      ><img src="https://img.icons8.com/metro/52/000000/chevron-left.png"/></div>
+    </div>
+  </div>
   </section>
 </main>

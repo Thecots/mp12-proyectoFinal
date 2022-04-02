@@ -4,15 +4,14 @@ const {cehckSession, userArea} = require('./../middlewares/session');
 const { dbfind } = require("../middlewares/dbfind");
 const path = require('path');
 const moment = require('moment');
-const { log } = require("console");
 
 /* GET - página principal categorias */
 router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
   req.params.page = req.params.page >= 1 ? req.params.page : 1;
-  end = req.params.page*50;
-  start = end - 50;
-
+  end = 10;
+  start = (req.params.page*end)- end;
   sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.id}`);
+  count = await dbfind(`SELECT count(id) elem FROM posts WHERE foro = ${req.params.id}`);
   sql2 = await dbfind(`
   SELECT
   posts.id id,
@@ -61,7 +60,6 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
       }
     });
   }
-  
   res.render("categoria",{
     categoria: true,
     session: req.session,
@@ -69,7 +67,9 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
       id: req.params.id,
       page: req.params.page,
       foro: sql.res[0].name,
-      post: sql2.res
+      post: sql2.res,
+      count: count.res[0].elem,
+      end
     }
   });
 })
@@ -109,17 +109,16 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
   (SELECT count(id) FROM posts c WHERE c.user = comments.user) as postNum,
   comments.created
   FROM comments
-  LEFT JOIN comentslikes le ON le.comment = comments.post
+  LEFT JOIN comentslikes le ON le.comment = comments.id
   LEFT JOIN users u ON comments.user = u.id
   LEFT JOIN comments c ON comments.user = c.post
   LEFT JOIN postslikes l ON comments.user = l.post
   WHERE comments.post = ${req.params.id}
   GROUP BY comments.id
   `)
-
   userlikescom = false
   if(req.session.ok){
-    userlikescom = dbfind(`
+    userlikescom = await dbfind(`
     SELECT
     c.comment
     FROM comentslikes as c
@@ -171,19 +170,7 @@ router.get('/foro/tema/:foro/:id', [cehckSession], async (req,res) => {
 })
 
 
-/* GET - like post */
-router.get('/like/:foro/:id', [cehckSession], async (req,res) => {
-  postid = req.params.id;
-  foro = req.params.foro;
-  user = req.session.id;
-  sql = await dbfind(`SELECT id FROM postslikes WHERE post = ${postid} AND user = ${user}`);
-  if(sql.res.length === 0){
-    sql = await dbfind(`INSERT INTO postslikes(post,user) VALUES (${postid},${user})`);
-  }else{
-    sql = await dbfind(`DELETE FROM postslikes WHERE post = ${postid} AND user = ${user}`);
-  }
-  res.redirect('/foro/tema/'+foro+'/'+postid);
-});
+
 
 
 /* GET - crear post */
@@ -208,6 +195,46 @@ router.post('/save_post', [cehckSession, userArea], async (req,res) => {
   sql = await dbfind(`INSERT INTO posts(title,content,foro,user)
                       VALUES('${req.body.title}','${c}',${req.body.foro},${req.session.id})`);
   res.send(JSON.stringify({ok: true}))
+});
+
+
+
+/* POST - like post */
+router.post('/post/like/', [cehckSession,userArea], async (req,res) => {
+  postid = req.body.id;
+  user = req.session.id;
+  l = '*';
+  try {
+    sql = await dbfind(`SELECT id FROM postslikes WHERE post = ${postid} AND user = ${user}`);
+    if(sql.res.length === 0){
+      sql = await dbfind(`INSERT INTO postslikes(post,user) VALUES (${postid},${user})`);
+          l = '+'
+    }else{
+      sql = await dbfind(`DELETE FROM postslikes WHERE post = ${postid} AND user = ${user}`);
+          l = '-'
+    }
+    res.json({ok:true, action: l})
+  } catch (error) {
+    res.json({ok:false})
+  }
+});
+
+/* POST - like comment */
+router.post('/comment/like/', [cehckSession, userArea], async (req,res) => {
+ try {
+  sql = await dbfind(`SELECT id FROM comentslikes WHERE comment = ${req.body.id} AND user = ${req.session.id}`);
+  l = '*';
+  if(sql.res.length === 0){
+    sql = await dbfind(`INSERT INTO comentslikes(comment,user) VALUES (${req.body.id},${req.session.id})`);
+    l = '+'
+  }else{
+    sql = await dbfind(`DELETE FROM comentslikes WHERE comment = ${req.body.id} AND user = ${req.session.id}`);
+    l = '-'
+  }
+  res.json({ok:true, action: l})
+ } catch (error) {
+  res.json({ok:false})
+ }
 });
 
 module.exports = router;

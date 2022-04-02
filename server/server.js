@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
+
 /* ejs */
 app.use(expressLayouts);
 app.set('view engine', 'ejs');

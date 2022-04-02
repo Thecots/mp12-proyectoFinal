@@ -18,18 +18,7 @@ main{
   text-transform: uppercase;
 }
 
-main .button{
-  background-color: royalblue;
-  color: white;
-  font-weight: 500;
-  padding: 5px 15px;
-  outline: none;
-  cursor: pointer;
-  margin-top: 15px;
-  border-radius: 4px;
-  text-decoration: none;
-  border: none;
-}
+
 
 
 /* section */
@@ -43,7 +32,6 @@ section{
 
 
 table {
-  margin-top: 30px;
   border-collapse: collapse;
   width: 100%;
 }
