@@ -1,8 +1,8 @@
-const express = require("express");
-const router = express.Router();
 const { dbfind } = require("../middlewares/dbfind");
+const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+const router = express.Router();
 
 /* GET - login */
 router.get('/login', async (req, res) => {
@@ -38,7 +38,7 @@ router.get('/register', (req, res) => {
   });
 })
 
-/* PUT - register user */
+/* PUT - register */
 router.put('/register', async (req, res) => {
   username = req.body.username;
   sql = await dbfind(`SELECT username FROM users WHERE username = '${username}'`);
@@ -49,9 +49,4 @@ router.put('/register', async (req, res) => {
   }
   return res.send(JSON.stringify({ok: false}))
 })
-
-
-
-
-
 module.exports = router;

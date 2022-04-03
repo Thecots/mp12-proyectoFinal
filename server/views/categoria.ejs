@@ -3,7 +3,11 @@
     <h1><%=data.foro%></h1>
   </div>
   <div class="footerPag onthetop">
-    <a class="button" href="/nuevo_post/<%= data.id%>">Crear post</a>
+    <a class="button"
+    <% if (session.ok) { %>
+      href="/nuevo_post/<%= data.id%>"
+    <% }else{ %> onclick="sesionAlert()" <%} %>
+    >Crear post</a>
     <div id="pagination">
       <div class="before
       <% if (data.page == 1) { %> dissabled" <% } else{ %>" onclick="window.location.href = '/foros/<%=data.id%>/<%=parseInt(data.page)-1%>/'"<% } %> 
@@ -36,9 +40,9 @@
             </div>
           </td>
           <td class="autor">
-              <img src="<%=n.picture%>" onclick="window.location.href = '/profile/<%=n.creatorUsername%>'">
+              <img src="<%=n.picture%>" onclick="window.location.href = '/profile/<%=n.creatorId%>'">
               <div>
-                <a href="/profile/<%=n.creatorUsername%>"><%=n.creatorUsername%></a>
+                <a href="/profile/<%=n.creatorId%>"><%=n.creatorUsername%></a>
                 <br>
                 <span>
                   <% if (n.created.y != 0) { %>
@@ -60,7 +64,7 @@
           <td class="umensaje">
           
             <!-- si hay comentarios -->
-            <a href="/profile/<%=n.lastUser%>"><%= n.lastUser %></a>
+            <a href="/profile/<%=n.lastUserId%>"><%= n.lastUser %></a>
             <br>
             <span>
              <% if (n.lastComment.y != 0) { %>
@@ -101,7 +105,11 @@
   <% } %>
   <% if (data.post.length != 0) { %>
   <div class="footerPag">
-    <a class="button" href="/nuevo_post/<%= data.id%>">Crear post</a>
+    <a class="button"
+    <% if (session.ok) { %>
+      href="/nuevo_post/<%= data.id%>"
+    <% }else{ %> onclick="sesionAlert()" <%} %>
+    >Crear post</a>
       <div id="pagination">
       <div class="before
         <% if (data.page == 1) { %> dissabled" <% } else{ %>" onclick="window.location.href = '/foros/<%=data.id%>/<%=parseInt(data.page)-1%>/'"<% } %> 
@@ -116,3 +124,4 @@
       <% } %>
   </section>
 </main>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -3,7 +3,11 @@
     <h1><%=data.foro%></h1><br>
   </div>
   <div class="footerPag onthetop">
-    <a class="button" style="margin: 0" href="/comentar_post/<%= data.id%>/" >Responder / Comentar</a>
+    <a class="button" style="margin: 0"
+    <% if (session.ok) { %>
+      href="/comentar_post/<%= data.id%>/"
+    <% }else{ %> onclick="sesionAlert()" <%} %>
+     >Responder / Comentar</a>
     <div id="pagination">
       <div class="before
       <% if (data.page == 1) { %> dissabled" <% } else{ %>" onclick="window.location.href = '/foro/tema/<%= data.foroid %>/<%=data.id%>/<%=parseInt(data.page)-1%>/'"<% } %> 
@@ -21,7 +25,7 @@
         <img src="<%= data.post.picture %>" alt="">
         <a href="/foros/<%= data.foroid%>/1/"><%= data.foro %></a>
         <div>
-          <a href="/profile/<%= data.post.username %>/"><%= data.post.username %></a>
+          <a href="/profile/<%= data.post.userId %>/"><%= data.post.username %></a>
           <span>
             <img src="https://img.icons8.com/ios-glyphs/60/000000/comments.png"/>
             <%=data.post.commentNum+data.post.postNum%>
@@ -67,8 +71,8 @@
     <div class="comment_">
       <div class="header">
         <div class="user">
-          <img src="<%= n.picture %>" onclick="window.location.href = '/profile/<%= n.username %>/' ">
-          <a href="/profile/<%= n.username %>/"><%= n.username %></a>
+          <img src="<%= n.picture %>" onclick="window.location.href = '/profile/<%= n.userid %>/' ">
+          <a href="/profile/<%= n.userid %>/"><%= n.username %></a>
           <span>
             <img src="https://img.icons8.com/ios-glyphs/60/000000/comments.png"/>
             <%=n.commentNum+n.postNum%>
@@ -98,7 +102,7 @@
         <% if (typeof(session) != 'undefined' && session.ok) { %>
           onclick="likeComment(<%= n.id %>)" id="commentimg<%= n.id %>"
         <% } %>
-        <% if (data.userlikescom.find(d => d.comment == n.id) != undefined) { %>
+        <% if (data.userlikescom  && data.userlikescom.find(d => d.comment == n.id) != undefined) { %>
           class="imlikeon"
         <% } %>
         >
@@ -108,7 +112,11 @@
    <% }) %>
   </div>
   <div class="footerPag onthetop">
-    <a class="button" style="margin: 0" href="/comentar_post/<%= data.id%>/" >Responder / Comentar</a>
+    <a class="button" style="margin: 0"
+    <% if (session.ok) { %>
+      href="/comentar_post/<%= data.id%>/"
+    <% }else{ %> onclick="sesionAlert()" <%} %>
+     >Responder / Comentar</a>
     <div id="pagination">
       <div class="before
       <% if (data.page == 1) { %> dissabled" <% } else{ %>" onclick="window.location.href = '/foro/tema/<%= data.foroid %>/<%=data.id%>/<%=parseInt(data.page)-1%>/'"<% } %> 
@@ -121,9 +129,9 @@
     </div>
   </div>
 </main>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   function postLike(e){
-    console.log(1);
     fetch('/post/like/',{
       method: 'POST',
       body: JSON.stringify({id: e}),

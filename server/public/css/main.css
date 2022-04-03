@@ -23,6 +23,39 @@ main.crearpost h1{
   margin: 0 !important;
 }
 
+a{
+  cursor: pointer;
+}
+
+
+@media screen and (max-width: 700px) {
+  header ._logo h1{
+    font-size: 25px;
+  }
+} 
+
+
+@media screen and (max-width: 600px) {
+  header ._logo h1{
+   display: none;
+  }
+  .resp,.votos{
+    display: none;
+  }
+
+} 
+
+@media screen and (max-width: 600px) {
+  header ._logo h1{
+   display: none;
+  }
+  .umensaje{
+    display: none;
+  }
+
+} 
+
+
 /* SCROLLBAR */
 /* width */
 ::-webkit-scrollbar {

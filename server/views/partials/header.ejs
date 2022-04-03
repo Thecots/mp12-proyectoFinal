@@ -20,8 +20,6 @@
         </div>
         <h1><%= session.username %></h1>
         <nav>
-          <li><a href="/profile/<%= session.username %>">Perfil</a></li>
-          <span></span>
           <li><a onclick="cerrarSession()">Cerrar sesión</a></li>
         </nav>
       </div>
@@ -31,8 +29,9 @@
     <nav>
       <ul>
         <li><a href="/">Inicio</a></li>
-        <li><a href="/">Noticias</a></li>
-        <li><a href="/">Perfil</a></li>
+       <% if (session.ok) { %>
+        <li><a href="/profile/<%=session.id%>/">Perfil</a></li>
+       <% } %>
       </ul>
     </nav>
   </section>
@@ -51,7 +50,7 @@
     <% }%>
     <% if (typeof(post) != "undefined"){%>
       / <a href="/foros/<%=data.foroid%>/1/"><%= data.foro%></a>
-      / <a href="/foro/tema/<%=data.foroid%>/<%=data.id%>/"><%= data.post.title %></a>
+      / <a href="/foro/tema/<%=data.foroid%>/<%=data.id%>/1/"><%= data.post.title %></a>
     <% }%>
     <% if (typeof(Perfil) != "undefined"){%>
       / <a href="/foros/<%=data.id%>/1/"><%= 1 %></a>

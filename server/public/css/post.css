@@ -229,3 +229,14 @@ section.footer{
   margin-top: 15px;
   margin-bottom:20px;
 }
+
+
+/* img */
+
+.content img{
+  max-width: 100%;
+  width: 500px;
+  height: 500px;
+  object-fit: contain;
+  padding: 20px;
+}
