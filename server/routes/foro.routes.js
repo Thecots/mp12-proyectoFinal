@@ -59,6 +59,7 @@ router.get('/foros/:id/:page', [cehckSession], async(req,res) => {
           y: hoy.diff(creado,'years')
         } 
       }else{
+        n.lastUserId = n.creatorId
         n.lastComment = n.created;
       }
     });

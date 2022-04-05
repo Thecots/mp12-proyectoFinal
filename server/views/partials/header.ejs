@@ -14,11 +14,11 @@
       <!-- session true -->
       <div class="sessionon">
         <div class="img">
-          <div>
-            <img src="<%= session.picture %>" alt="">
+          <div onclick="window.location.href='/profile/<%=session.id%>/temas'">
+            <img src="<%= session.picture %>">
           </div>
         </div>
-        <h1><%= session.username %></h1>
+        <h1  onclick="window.location.href='/profile/<%=session.id%>/temas'"><%= session.username %></h1>
         <nav>
           <li><a onclick="cerrarSession()">Cerrar sesión</a></li>
         </nav>
