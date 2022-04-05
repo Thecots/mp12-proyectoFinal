@@ -1,1 +1,210 @@
-asd
+<main>
+  <section class="profileHead">
+    <div class="top">
+      <h1><%=data.username%></h1>
+      <span>Unido: <b><%=data.created%></b></span>
+    </div>
+    <div class="bottom">
+      <div>
+        <span>
+          Temas
+          <b><%=userPosts%></b>
+        </span>
+        <span>
+          Comentarios
+          <b><%=usercomments%></b>
+        </span>
+      </div>
+    </div>
+    <div class="clickimg" onclick=" imgch()">
+      <img src="<%= data.picture %>">
+    </div>
+  </section>
+  <section class="profilecos">
+    <div class="header">
+      <a href="/profile/<%= data.id %>/temas/" <% if(headeractive == 'temas'){ %> class="active" <%} %> >Temas</a>
+      <a href="/profile/<%= data.id %>/comentarios/"<% if(headeractive == 'comentarios'){ %> class="active" <%} %>>Comentarios</a>
+    </div>
+  </section>
+  <section class="table">
+  <% if (headeractive == 'temas') { %>
+    <% if (posts.length != 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th class="tema">TEMA</th>
+            <th class="autor">AUTOR</th>
+            <th class="umensaje">ÚLTIMO MENSAJE</th>
+            <th class="resp">RESP.</th>
+            <th class="votos">VOTOS</th>
+          </tr>
+        </thead>
+        <tbody>
+     <% posts.forEach(n => { %>
+        <tr>
+          <td class="tema">
+            <div>
+              <a href='/foro/tema/<%=data.id%>/<%=n.id%>/1/'><%= n.title %></a>
+            </div>
+          </td>
+          <td class="autor">
+              <img src="<%=n.picture%>" onclick="window.location.href = '/profile/<%=n.creatorId%>/temas/'">
+              <div>
+                <a href="/profile/<%=n.creatorId%>/temas/"><%=n.creatorUsername%></a>
+                <br>
+                <span>
+                  <% if (n.created.y != 0) { %>
+                    <%= n.created.y == 1 ? 'Hace '+n.created.y+' Año': 'Hace '+n.created.y+' Años'%>
+                 <% }else if(n.created.mo != 0){ %>
+                    <%= n.created.mo == 1 ? 'Hace '+n.created.mo+' Mes': 'Hace '+n.created.mo+' Meses'%>
+                  <% }else if(n.created.d){ %>
+                    <%= n.created.d == 1 ? 'Hace '+n.created.d+' Día' : 'Hace '+n.created.d+' Días'%>
+                  <% }else if(n.created.h){ %>
+                    <%= n.created.h == 1 ? 'Hace '+n.created.h+' Hora' : 'Hace '+n.created.h+' Horas'%>
+                  <% }else if(n.created.m){ %>
+                    <%= n.created.m == 1 ? 'Hace '+n.created.m+' Minuto' : 'Hace '+n.created.m+' Minutos'%>
+                  <% }else if(n.created.s){ %>
+                    <%= n.created.s == 1 ? 'Hace '+n.created.s+' Segundo' : 'Hace '+n.created.s+' Segundos'%>
+                  <% } %>
+                </span>
+              </div>     
+          </td>
+          <td class="umensaje">
+            <!-- si hay comentarios -->
+            <a href="/profile/<%=n.lastUserId%>/temas/"><%= n.lastUser %></a>
+            <br>
+            <span>
+             <% if (n.lastComment.y != 0) { %>
+                <%= n.lastComment.y == 1 ? 'Hace '+n.lastComment.y+' Año': 'Hace '+n.lastComment.y+' Años'%>
+             <% }else if(n.lastComment.mo != 0){ %>
+                <%= n.lastComment.mo == 1 ? 'Hace '+n.lastComment.mo+' Mes': 'Hace '+n.lastComment.mo+' Meses'%>
+              <% }else if(n.lastComment.d){ %>
+                <%= n.lastComment.d == 1 ? 'Hace '+n.lastComment.d+' Día' : 'Hace '+n.lastComment.d+' Días'%>
+              <% }else if(n.lastComment.h){ %>
+                <%= n.lastComment.h == 1 ? 'Hace '+n.lastComment.h+' Hora' : 'Hace '+n.lastComment.h+' Horas'%>
+              <% }else if(n.lastComment.m){ %>
+                <%= n.lastComment.m == 1 ? 'Hace '+n.lastComment.m+' Minuto' : 'Hace '+n.lastComment.m+' Minutos'%>
+              <% }else if(n.lastComment.s){ %>
+                <%= n.lastComment.s == 1 ? 'Hace '+n.lastComment.s+' Segundo' : 'Hace '+n.lastComment.s+' Segundos'%>
+              <% } %>
+            </span>
+          </td>
+          <td class="resp">
+            <p><%= n.comments%></p>
+          </td>
+          <td class="votos">
+            <p><%= n.likes%></p>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+   <% }else{ %>
+    <div class="nopost">
+       <h1>Todavía no hay ningun post</h1>
+    </div>
+    <% }%>
+  <% } else if(headeractive == 'comentarios') { %>
+    <% if (comments.length != 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th class="tema">TEMA / COMENTARIO</th>
+            <th class="umensaje">FECHA</th>
+            <th class="votos">VOTOS</th>
+          </tr>
+        </thead>
+        <tbody>
+     <% comments.forEach(n => { %>
+        <tr>
+          <td class="tema teamcoment">
+            <div>
+              <a href='/foro/tema/<%=n.foroid%>/<%=n.postid%>/1/'><%= n.title %></a>
+              <p><%- n.comment%></p>
+            </div>
+          </td>
+          <td class="umensaje">
+            <span>
+              <% if (n.created.y != 0) { %>
+                <%= n.created.y == 1 ? 'Hace '+n.created.y+' Año': 'Hace '+n.created.y+' Años'%>
+              <% }else if(n.created.mo != 0){ %>
+                <%= n.created.mo == 1 ? 'Hace '+n.created.mo+' Mes': 'Hace '+n.created.mo+' Meses'%>
+              <% }else if(n.created.d){ %>
+                <%= n.created.d == 1 ? 'Hace '+n.created.d+' Día' : 'Hace '+n.created.d+' Días'%>
+              <% }else if(n.created.h){ %>
+                <%= n.created.h == 1 ? 'Hace '+n.created.h+' Hora' : 'Hace '+n.created.h+' Horas'%>
+              <% }else if(n.created.m){ %>
+                <%= n.created.m == 1 ? 'Hace '+n.created.m+' Minuto' : 'Hace '+n.created.m+' Minutos'%>
+              <% }else if(n.created.s){ %>
+                <%= n.created.s == 1 ? 'Hace '+n.created.s+' Segundo' : 'Hace '+n.created.s+' Segundos'%>
+              <% } %>
+            </span>
+          </td>
+          <td class="votos">
+            <p><%= n.likes%></p>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+   <% }else{ %>
+    <div class="nopost">
+       <h1>Todavía no hay comentarios</h1>
+    </div>
+    <% }%>
+   <% } %>
+  </section>
+</main>
+<div class="extrwindow">
+  <div class="closewindow" onclick="closeimgc()"></div>
+  <div class="boxImg">
+    <h1>Cambiar imagen de perfil</h1>
+    <form>
+      <input type="file" required  onlyaccept="image/png,  image/jifif, image/jpeg" name="img" onchange="loadFile(event)" />
+      <img id="output"/>
+      <button type="submit">Cambiar</button>
+    </form>
+  </div>
+</div>
+<script>
+
+  document.querySelector('form').addEventListener('submit', (e) =>{
+    e.preventDefault()
+    file = new FormData();
+    file.append('img',document.querySelector('form input').files[0])
+    
+    fetch('/profile/image/',{
+      method: 'POST',
+      body: file
+    }).then(r => r.json())
+      .then(r => {
+        if(r.ok){
+          window.location.reload()
+        }else{
+          console.error('error xd')
+        }
+      })
+  })
+
+  function imgch(){
+    document.querySelector('.extrwindow').style.display = 'flex'
+  }
+
+  function closeimgc(){
+    document.querySelector('.extrwindow').style.display = 'none'
+    document.querySelector('#output').style.display = 'none'
+  }
+
+  function loadFile(event) {
+    document.querySelector('#output').style.display = 'block'
+    var output = document.querySelector('#output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src)
+    }
+  };
+</script>

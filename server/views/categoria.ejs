@@ -5,7 +5,7 @@
   <div class="footerPag onthetop">
     <a class="button"
     <% if (session.ok) { %>
-      href="/nuevo_post/<%= data.id%>"
+      href="/nuevo_post/<%= data.id%>/"
     <% }else{ %> onclick="sesionAlert()" <%} %>
     >Crear post</a>
     <div id="pagination">
@@ -40,9 +40,9 @@
             </div>
           </td>
           <td class="autor">
-              <img src="<%=n.picture%>" onclick="window.location.href = '/profile/<%=n.creatorId%>'">
+              <img src="<%=n.picture%>" onclick="window.location.href = '/profile/<%=n.creatorId%>/temas/'">
               <div>
-                <a href="/profile/<%=n.creatorId%>"><%=n.creatorUsername%></a>
+                <a href="/profile/<%=n.creatorId%>/temas/"><%=n.creatorUsername%></a>
                 <br>
                 <span>
                   <% if (n.created.y != 0) { %>
@@ -64,7 +64,7 @@
           <td class="umensaje">
           
             <!-- si hay comentarios -->
-            <a href="/profile/<%=n.lastUserId%>"><%= n.lastUser %></a>
+            <a href="/profile/<%=n.lastUserId%>/temas/"><%= n.lastUser %></a>
             <br>
             <span>
              <% if (n.lastComment.y != 0) { %>
@@ -107,7 +107,7 @@
   <div class="footerPag">
     <a class="button"
     <% if (session.ok) { %>
-      href="/nuevo_post/<%= data.id%>"
+      href="/nuevo_post/<%= data.id%>/"
     <% }else{ %> onclick="sesionAlert()" <%} %>
     >Crear post</a>
       <div id="pagination">

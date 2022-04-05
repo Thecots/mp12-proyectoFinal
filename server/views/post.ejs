@@ -25,7 +25,7 @@
         <img src="<%= data.post.picture %>" alt="">
         <a href="/foros/<%= data.foroid%>/1/"><%= data.foro %></a>
         <div>
-          <a href="/profile/<%= data.post.userId %>/"><%= data.post.username %></a>
+          <a href="/profile/<%= data.post.userId %>/temas/"><%= data.post.username %></a>
           <span>
             <img src="https://img.icons8.com/ios-glyphs/60/000000/comments.png"/>
             <%=data.post.commentNum+data.post.postNum%>
@@ -71,8 +71,8 @@
     <div class="comment_">
       <div class="header">
         <div class="user">
-          <img src="<%= n.picture %>" onclick="window.location.href = '/profile/<%= n.userid %>/' ">
-          <a href="/profile/<%= n.userid %>/"><%= n.username %></a>
+          <img src="<%= n.picture %>" onclick="window.location.href = '/profile/<%= n.userid %>/temas/' ">
+          <a href="/profile/<%= n.userid %>/temas/"><%= n.username %></a>
           <span>
             <img src="https://img.icons8.com/ios-glyphs/60/000000/comments.png"/>
             <%=n.commentNum+n.postNum%>

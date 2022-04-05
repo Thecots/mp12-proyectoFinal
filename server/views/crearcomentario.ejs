@@ -2,29 +2,25 @@
   <main class="crearpost">
     <h1>Nuevo mensaje</h1>
     <h2>Tema: <a style="color: rgb(255, 45, 8);" href="/foro/tema/<%= data.foroid%>/<%=data.postid%>/1/"><%= data.posttitle%></a></h2>
-    <div class="edtior" data-tiny-editor
-          data-fontname="no">
-      <p>
-      </p>
+    <div class="edtior comenteditor" data-tiny-editor>
+      <textarea class=".__editor" required minlength="5" maxlength="150"></textarea>
+      <div class="totalletters">150 caracteres restantes</div>
     </div>
     <input type="text"  id="postid" hidden value="<%= data.postid %>">
     <button class="button" type="submit">Publicar mensaje</button>
   </main>
 </form>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/editor.js"></script>
 <script>
-
-
   document.querySelector('form').addEventListener('submit', e => {
     e.preventDefault();
     titulo = document.querySelector('.title');
-    content = document.querySelector('.__editor');
+    content = document.querySelector('textarea');
     fetch('/comentar_post',
           {method: 'POST',
           body: JSON.stringify({
             postid: document.querySelector('#postid').value,
-            content: document.querySelector('.__editor').innerHTML
+            content: document.querySelector('textarea').value
           }),
           headers:{
             'Content-Type': 'application/json'
@@ -47,6 +43,12 @@
             )
          }
       });
+  })
+
+
+  document.querySelector('textarea').addEventListener('keyup', e=> {
+    x = document.querySelector('textarea')
+    document.querySelector('.totalletters').innerHTML = 150-x.value.length
   })
 </script>
 

@@ -7,8 +7,8 @@
     <% if (!session.ok) { %>
       <!-- session false -->
       <div class="sessionoff">
-        <a href="/login">Iniciar sesión</a>
-        <a href="/register">Crear cuenta</a>
+        <a href="/login/">Iniciar sesión</a>
+        <a href="/register/">Crear cuenta</a>
       </div>
     <% }else{ %>
       <!-- session true -->
@@ -30,7 +30,10 @@
       <ul>
         <li><a href="/">Inicio</a></li>
        <% if (session.ok) { %>
-        <li><a href="/profile/<%=session.id%>/">Perfil</a></li>
+        <li><a href="/profile/<%=session.id%>/temas/">Perfil</a></li>
+       <% } %>
+       <% if (session.class == 1) { %>
+        <li><a href="/dashboard/">Dashboard</a></li>
        <% } %>
       </ul>
     </nav>
@@ -52,8 +55,13 @@
       / <a href="/foros/<%=data.foroid%>/1/"><%= data.foro%></a>
       / <a href="/foro/tema/<%=data.foroid%>/<%=data.id%>/1/"><%= data.post.title %></a>
     <% }%>
-    <% if (typeof(Perfil) != "undefined"){%>
-      / <a href="/foros/<%=data.id%>/1/"><%= 1 %></a>
-    <% }%>    
+    <% if (typeof(profile) != "undefined"){%>
+      / <a>perfil</a> /
+     <% if (headeractive == 'temas') { %>
+      <a href="/profile/<%= data.id %>/temas/"> <%= data.username %> / Temas</a>
+     <% }else if(headeractive == 'comentarios'){ %>
+      <a href="/profile/<%= data.id %>/comentarios/"> <%= data.username %> / Comentarios</a>
+    <% }%>   
+  <% }%>    
   </section>
 <% } %>

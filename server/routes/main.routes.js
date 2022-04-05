@@ -14,6 +14,7 @@ router.get('/', [cehckSession], async(req, res) => {
   FROM foros
   LEFT JOIN categorias ON foros.categoria = categorias.id
   ORDER BY categorias.id`);
+  if(!sql.ok) return res.redirect('*')
   let cat = await dbfind('SELECT categoria FROM categorias');
   res.render("index",{
     home: true,

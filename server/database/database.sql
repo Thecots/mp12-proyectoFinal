@@ -13,7 +13,9 @@ CREATE TABLE users(
   class INT DEFAULT 3,
   username VARCHAR(20) NOT NULL,
   passwd VARCHAR(100) NOT NULL,
-  picture VARCHAR(100) DEFAULT '/img/defaultuser.png',
+  created DATETIME default current_timestamp,
+  picture VARCHAR(250) DEFAULT '/img/defaultuser.png',
+  pictureid  VARCHAR(100),
   FOREIGN KEY fk_class(class) REFERENCES class(id)
 );
 
@@ -69,6 +71,7 @@ CREATE TABLE comentslikes(
   FOREIGN KEY fk_comment_cl(comment) REFERENCES comments(id),
   FOREIGN KEY fk_user_cl(user) REFERENCES users(id)
 );
+
 
 
 INSERT INTO class VALUES

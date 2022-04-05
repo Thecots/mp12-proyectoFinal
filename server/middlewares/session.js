@@ -1,16 +1,18 @@
 const jwt = require('jsonwebtoken');
 const decode = require('jsonwebtoken/decode');
+const { dbfind } = require('./dbfind');
 
 const cehckSession = (req,res,next) => {
   req.session = {ok:false};
   if(typeof req.cookies.session != 'undefined'){
-    jwt.verify(req.cookies.session, process.env.SEED, (err, decoded) => {
+    jwt.verify(req.cookies.session, process.env.SEED, async(err, decoded) => {
       if(!err){
+        picture = await dbfind(`select picture from users where id = ${decoded.id}`)
         req.session = {
           ok: true,
           id: decoded.id,
           username: decoded.username,
-          picture: decoded.picture,
+          picture:picture.res[0].picture,
           class: decoded.class
         };
       }
