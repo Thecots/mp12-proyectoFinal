@@ -204,7 +204,7 @@ router.post('/save_post', [cehckSession, userArea], async (req,res) => {
   c = req.body.content.replaceAll('`','"').replaceAll("'",'"')
   sql = await dbfind(`INSERT INTO posts(title,content,foro,user)
                       VALUES('${req.body.title}','${c}',${req.body.foro},${req.session.id})`);
-  res.send(JSON.stringify({ok: true}))
+  res.send(JSON.stringify({ok: sql.ok}))
 });
 
 /* POST - like post */

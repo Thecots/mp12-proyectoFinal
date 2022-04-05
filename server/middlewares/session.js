@@ -15,10 +15,15 @@ const cehckSession = (req,res,next) => {
           picture:picture.res[0].picture,
           class: decoded.class
         };
+        next()
+      }else{
+        next()
       }
     })
-  };
-  next()
+  }else{
+    next()
+  }
+  
 }
 
 const userArea = (req,res,next) =>{
