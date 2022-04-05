@@ -39,7 +39,7 @@ main{
 }
 
 
-.clickimg:hover::before{
+.clickimg.clickhovimg:hover::before{
   content: "Cambiar";
   color: white;
   font-weight: 600;  display: flex;

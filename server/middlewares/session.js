@@ -7,14 +7,17 @@ const cehckSession = (req,res,next) => {
   if(typeof req.cookies.session != 'undefined'){
     jwt.verify(req.cookies.session, process.env.SEED, async(err, decoded) => {
       if(!err){
-        picture = await dbfind(`select picture from users where id = ${decoded.id}`)
-        req.session = {
-          ok: true,
-          id: decoded.id,
-          username: decoded.username,
-          picture:picture.res[0].picture,
-          class: decoded.class
-        };
+        sql = await dbfind(`select id from users where id = ${decoded.id}`)
+        if(sql.res.length != 0){
+          picture = await dbfind(`select picture from users where id = ${decoded.id}`)
+          req.session = {
+            ok: true,
+            id: decoded.id,
+            username: decoded.username,
+            picture:picture.res[0].picture,
+            class: decoded.class
+          };
+        }   
         next()
       }else{
         next()

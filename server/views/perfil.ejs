@@ -16,7 +16,7 @@
         </span>
       </div>
     </div>
-    <div class="clickimg" onclick=" imgch()">
+    <div class="clickimg  <% if(session.ok && session.id == data.id){ %> clickhovimg " onclick=" imgch()" <% }else{ %> " <%} %>>
       <img src="<%= data.picture %>">
     </div>
   </section>
@@ -170,6 +170,7 @@
     </form>
   </div>
 </div>
+<% if(session.ok && session.id == data.id){ %> 
 <script>
 
   document.querySelector('form').addEventListener('submit', (e) =>{
@@ -208,3 +209,4 @@
     }
   };
 </script>
+<% } %>
