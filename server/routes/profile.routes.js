@@ -83,6 +83,7 @@ router.get('/profile/:id/temas', [cehckSession], async (req,res) => {
   u.picture picture,
   u.username creatorUsername,
   posts.user creatorId,
+  posts.foro foroid,
   posts.created,
   COUNT(DISTINCT l.id) likes,
   COUNT(DISTINCT c.id) comments,
@@ -151,7 +152,6 @@ router.post('/profile/image/', [cehckSession,userArea,upload()] , async(req,res)
     const sql = await dbfind(`UPDATE users SET picture = '${imgc.url}', pictureid = '${imgc.public_id}' WHERE id = ${req.session.id}`)
     fs.unlink(path.join(__dirname,`../public/img/temp/${req.file.filename}`), function(err) {
       if (err) console.log('error, img no deleted :(');});
-
     res.json({ok:true})
   } catch (error) {
     res.json({ok:false})
