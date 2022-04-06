@@ -38,30 +38,33 @@
       </ul>
     </nav>
   </section>
-  <section class="navigation">
-    <a href="/">Inicio</a>
-    <% if (typeof(categoria) != "undefined"){%>
-      / <a href="/foros/<%=data.id%>/1/"><%=data.foro%></a>
-    <% }%>
-    <% if (typeof(crearpost) != "undefined"){%>
-      / <a href="/foros/<%=data.id%>/1/"><%= data.foro%></a>
-      / <a href="/nuevo_post/<%=data.id%>/">crear post</a>
-    <% }%>
-    <% if (typeof(crearcomentario) != "undefined"){%>
-      / <a href="/foros/<%=data.foroid%>/1/"><%= data.foro%></a>
-      / <a href="/comentar_post/<%=data.postid%>/">nuevo mensaje</a>
-    <% }%>
-    <% if (typeof(post) != "undefined"){%>
-      / <a href="/foros/<%=data.foroid%>/1/"><%= data.foro%></a>
-      / <a href="/foro/tema/<%=data.foroid%>/<%=data.id%>/1/"><%= data.post.title %></a>
-    <% }%>
-    <% if (typeof(profile) != "undefined"){%>
-      / <a>perfil</a> /
-     <% if (headeractive == 'temas') { %>
-      <a href="/profile/<%= data.id %>/temas/"> <%= data.username %> / Temas</a>
-     <% }else if(headeractive == 'comentarios'){ %>
-      <a href="/profile/<%= data.id %>/comentarios/"> <%= data.username %> / Comentarios</a>
-    <% }%>   
-  <% }%>    
-  </section>
-<% } %>
+  <% if (typeof(dashboard) == 'undefined') { %>
+   
+    <section class="navigation">
+      <a href="/">Inicio</a>
+      <% if (typeof(categoria) != "undefined"){%>
+        / <a href="/foros/<%=data.id%>/1/"><%=data.foro%></a>
+        <% }%>
+        <% if (typeof(crearpost) != "undefined"){%>
+          / <a href="/foros/<%=data.id%>/1/"><%= data.foro%></a>
+          / <a href="/nuevo_post/<%=data.id%>/">crear post</a>
+          <% }%>
+          <% if (typeof(crearcomentario) != "undefined"){%>
+            / <a href="/foros/<%=data.foroid%>/1/"><%= data.foro%></a>
+            / <a href="/comentar_post/<%=data.postid%>/">nuevo mensaje</a>
+            <% }%>
+            <% if (typeof(post) != "undefined"){%>
+              / <a href="/foros/<%=data.foroid%>/1/"><%= data.foro%></a>
+              / <a href="/foro/tema/<%=data.foroid%>/<%=data.id%>/1/"><%= data.post.title %></a>
+              <% }%>
+              <% if (typeof(profile) != "undefined"){%>
+                / <a>perfil</a> /
+                <% if (headeractive == 'temas') { %>
+                  <a href="/profile/<%= data.id %>/temas/"> <%= data.username %> / Temas</a>
+                  <% }else if(headeractive == 'comentarios'){ %>
+                    <a href="/profile/<%= data.id %>/comentarios/"> <%= data.username %> / Comentarios</a>
+                    <% }%>   
+                    <% }%>    
+                  </section>
+                  <% } %>
+                <% } %>

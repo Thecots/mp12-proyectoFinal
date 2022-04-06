@@ -1,0 +1,27 @@
+main{
+  width: 100%;
+  min-height: calc(100vh - 100px);
+  background:#f2f2f2;
+  display: grid;
+  grid-template-areas:
+  "aside main"
+  "aside main" 
+  ;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 1fr;
+}
+
+/* right menu */
+main aside{
+  background: white;
+  overflow-y: auto;
+  grid-area: aside;
+}
+
+/* main content */
+section.main{
+  border-radius: 5px;
+  margin: 10px;
+  grid-area: main;
+  background: rgb(255, 255, 255);
+}

@@ -27,6 +27,7 @@ router.get('/', [cehckSession], async(req, res) => {
 })
 
 router.use(require('./login.routes'))
+router.use(require('./dashboard.routes'))
 router.use(require('./foro.routes'))
 router.use(require('./profile.routes'))
 
