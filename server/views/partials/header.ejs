@@ -25,6 +25,7 @@
       </div>
     <% } %>
   </header>
+  <% if (typeof(dashboard) == 'undefined') { %>
   <section class="menu">
     <nav>
       <ul>
@@ -38,8 +39,6 @@
       </ul>
     </nav>
   </section>
-  <% if (typeof(dashboard) == 'undefined') { %>
-   
     <section class="navigation">
       <a href="/">Inicio</a>
       <% if (typeof(categoria) != "undefined"){%>

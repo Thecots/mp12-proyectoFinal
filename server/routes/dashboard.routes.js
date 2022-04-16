@@ -15,9 +15,8 @@ const router = express.Router();
           - this month user registred
           - this month post
           - last month comments
-
-
 */
+
 router.get('/dashboard',[cehckSession,userArea], async(req,res) => {
   const sql = await dbfind('SELECT count(id) as users FROM users ORDER BY  MONTH(created)')
   console.log(sql.res);

@@ -8,7 +8,7 @@ const cehckSession = (req,res,next) => {
     jwt.verify(req.cookies.session, process.env.SEED, async(err, decoded) => {
       if(!err){
         sql = await dbfind(`select id from users where id = ${decoded.id}`)
-        if(sql.res.length != 0){
+        if(sql.ok && sql.res.length != 0){
           picture = await dbfind(`select picture from users where id = ${decoded.id}`)
           req.session = {
             ok: true,
