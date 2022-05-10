@@ -46,6 +46,26 @@ router.get('/dashboard/usuarios',[cehckSession,userArea, adminArea], async(req,r
   })
 });
 
+router.get('/dashboard/categorias',[cehckSession,userArea, adminArea], async(req,res) => { 
+  const categorias = await dbfind(`SELECT categorias.*, (SELECT count(*) FROM foros WHERE foros.categoria = categorias.id) as foros FROM categorias`);
+  console.log(categorias.res[0].id);
+  res.render('dashboardCategorias',{
+    session: req.session,
+    dashboard: true,
+    cat: categorias.res
+    })
+});
+
+
+router.get('/dashboard/foro',[cehckSession,userArea, adminArea], async(req,res) => { 
+
+  res.render('dashboardForo',{
+    session: req.session,
+    dashboard: true
+    })
+});
+
+
 router.post('/editarUser', [cehckSession,userArea, adminArea], async(req,res) => { 
   const users = await dbfind(`SELECT * FROM users WHERE username = '${req.body.username}'`)
   if(users.res.length == 0 || users.res[0].id == req.body.id){
@@ -62,6 +82,19 @@ router.post('/editarUser', [cehckSession,userArea, adminArea], async(req,res) =>
   }
   
 })
+
+router.post('/editarCategoria', [cehckSession,userArea, adminArea], async(req,res) => { 
+  const users = await dbfind(`SELECT * FROM categorias WHERE categoria = '${req.body.categoria}'`)
+  if(users.res.length == 0 || users.res[0].id == req.body.id){
+    users2 = await dbfind(`UPDATE categorias SET categoria = '${req.body.categoria}' WHERE id = ${req.body.id}`)
+    console.log(users2);
+    res.json({ok:true,categoria:req.body.categoria})
+  }else{
+    res.json({ok:false})
+  }
+  
+});
+
 
 router.post('/ban',[cehckSession,userArea, adminArea], async(req,res) => { 
   const users = await dbfind(`UPDATE users SET class = 4 WHERE id = ${req.body.id}`)
@@ -92,11 +125,82 @@ router.post('/deleteUser',[cehckSession,userArea, adminArea], async(req,res) => 
   res.json({ok:false})
 });
 
+router.post('/deletePost',[cehckSession,userArea, adminArea], async(req,res) => { 
+  const id = req.body.id;
+  /* comentslikes */
+  cl = await dbfind(`
+  DELETE comentslikes FROM comentslikes
+  LEFT JOIN comments ON comentslikes.comment = comments.id LEFT JOIN posts ON posts.id = comments.post WHERE posts.id = ${id}`);
+  /* postlikes */
+  pl = await dbfind(`DELETE postslikes FROM postslikes LEFT JOIN posts ON posts.id = postslikes.post WHERE posts.id = ${id}`);
+  /* comments */
+  c = await dbfind(`DELETE comments FROM comments LEFT JOIN posts ON posts.id = comments.post WHERE posts.id = ${id}`);   
+  /* posts */
+  p = await dbfind(`DELETE posts FROM posts WHERE id = ${id}`);
+
+  if(cl.ok && pl.ok && c.ok && p.ok){
+    return res.json({ok:true})
+  }
+  res.json({ok:false})
+});
+
+router.post('/deleteCategoria',[cehckSession,userArea, adminArea], async(req,res) => { 
+  const id = req.body.id;
+   /* comentslikes */
+   cl = await dbfind(`
+    DELETE comentslikes FROM comentslikes
+    LEFT JOIN comments ON comentslikes.comment = comments.id
+    LEFT JOIN posts ON posts.id = comments.post
+    LEFT JOIN foros ON foros.id = posts.foro WHERE foros.categoria = ${id}`);
+
+  /* postlikes */
+  pl = await dbfind(`DELETE postslikes FROM postslikes LEFT JOIN posts ON posts.id = postslikes.post LEFT JOIN foros ON foros.id = posts.foro WHERE foros.categoria = ${id}`);
+
+  /* comments */
+  c = await dbfind(`DELETE comments FROM comments LEFT JOIN posts ON posts.id = comments.post LEFT JOIN foros ON foros.id = posts.foro WHERE foros.categoria =  ${id}`); 
+
+  /* posts */
+  p = await dbfind(`DELETE posts FROM posts LEFT JOIN foros ON foros.id = posts.foro WHERE foros.categoria = ${id}`);
+
+  /* foros */
+  f = await dbfind(`DELETE foros FROM foros WHERE categoria = ${id}`);
+  /* categoria */
+  ca = await dbfind(`DELETE categorias FROM categorias WHERE id = ${id}`);
+
+
+  console.log({cl,pl,c,p,f,ca});
+
+
+  if(cl){
+    return res.json({ok:true})
+  }
+  res.json({ok:false})
+});
+
+
 router.get('/dashboard/posts', [cehckSession,userArea, adminArea], async(req,res) => {
+  const sql = await dbfind(`
+  SELECT
+  posts.id as id,
+  posts.title,
+  posts.created,
+  posts.views,
+  posts.foro,
+  u.username,
+  (SELECT count(*) FROM postslikes as ps WHERE ps.post = posts.id) as likes,
+  (SELECT count(*) FROM comments as co WHERE co.post = posts.id) as comments
+  FROM posts
+  LEFT JOIN users as u ON u.id = posts.user`
+  );
+
+  sql.res.map(n => {
+    n.created = moment(n.created).format('MM/DD/YYYY')
+  })
 
   res.render('dasboardPosts',{
     session: req.session,
-    dashboard: true
+    dashboard: true,
+    post: sql.res
     })
 })
 

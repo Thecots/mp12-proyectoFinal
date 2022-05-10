@@ -1,15 +1,22 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<style>
+  main{
+    background: #d8dee4 !important;
+  }
+  section.main{
+    height: 100%;
+  }
+</style>
 <main>
   <aside>
     <nav>
       <li onclick="window.location.href= '/'"><a><i class="fa-solid fa-house"></i>Inicio</a></li>
       <li  onclick="window.location.href= '/dashboard'"><a><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
-      <li class="active" onclick="window.location.href= '/dashboard/usuarios'"><a><i class="fa-solid fa-users"></i>Usuarios</a></li>
-      <li onclick="window.location.href= '/dashboard/posts'"><a href="/dashboard/dashboard"><i class="fa-solid fa-message"></i>Posts</a></li>
-      <!--  <li><a href="/dashboard/categorias"><i class="fa-solid fa-bookmark"></i>categorias</a></li>
-      <li><a href="/dashboard/foros"><i class="fa-solid fa-inbox"></i>Foros</a></li>
-      
-    </nav> -->
+      <li  onclick="window.location.href= '/dashboard/usuarios'"><a><i class="fa-solid fa-users"></i>Usuarios</a></li>
+      <li onclick="window.location.href= '/dashboard/categorias'"><a href="/dashboard/categorias"><i class="fa-solid fa-bookmark"></i>categorias</a></li>
+      <li onclick="window.location.href= '/dashboard/foro'"><a href="/dashboard/foro"><i class="fa-solid fa-inbox"></i>Foros</a></li>
+      <li class="active" onclick="window.location.href= '/dashboard/posts'"><a href="/dashboard/posts"><i class="fa-solid fa-message"></i>Posts</a></li>
+    </nav> 
   </aside>
   <section class="main">
     <header>
@@ -23,46 +30,27 @@
                 <th>Titulo</th>
                 <th>Usuario</th>
                 <th>Fecha</th>
-                <th>Ver</th>
-                <th>Visitas</th>
+                <th>Likes</th>
                 <th>Comentarios</th>
+                <th>Visitas</th>
+                <th>Ver</th>
                 <th>Eliminar</th>
-                <th>Editar</th>
             </tr>
         </thead>
         <tbody>
-            <% for (let i = 0; i < users.length; i++) { %>
-              <% let x = users[i].class == 1 ? "Owner" : users[i].class == 2 ? "Admin" :"Usuario"%>
-              <tr>
-                <td style="text-align:start;"><%= users[i].id %></td>
-                <td  style="text-align:start;"><a class="linkuser" href="/profile/<%= users[i].id %>/temas/"><%= users[i].username %></a></td>
-                <td><%= users[i].created %></td>
-                <% if (users[i].class == 4) { %>
-                  <td><a class="linkuser" href="/profile/<%= users[i].id %>/temas/"><img src="/img/defaultuser.png"></a></td>
-                 <% }else{ %>
-                  <td><a class="linkuser" href="/profile/<%= users[i].id %>/temas/"><img src="<%= users[i].picture %>"></a></td>
-                  <%}%>
-                <td><%= x %> </td>
-                <% if (session.class == 1) { %>
-                  <% if (x == "Usuario" || x == "Admin") { %>
-                    <td><button class="btn red" onclick="Eliminar('<%= i%>','<%= users[i].id %>','<%= users[i].username %>')">Eliminar</button></td>
-                    <td><button class="btn grn" onclick="editar('<%= i%>','<%= users[i].id %>')">Editar</button></td>
-                        <% }else{ %>
-                          <td style="color: rgb(111, 111, 111);">No se puede</td>
-                          <td style="color: rgb(111, 111, 111);">No se puede</td>
-                        <% } %>  
-                  <% } %>
-                <% if (session.class == 2) { %>
-                  <% if (x == "Usuario") { %>
-                    <td><button class="btn red" onclick="Eliminar('<%= i%>','<%= users[i].id %>','<%= users[i].username %>')">Eliminar</button></td>
-                    <td><button class="btn grn" onclick="editar('<%= i%>','<%= users[i].id %>')">Editar</button></td>
-                      <% }else{ %>
-                        <td style="color: rgb(111, 111, 111);">No se puede</td>
-                        <td style="color: rgb(111, 111, 111);">No se puede</td>
-                      <% } %>  
-                <% } %>
-              </tr>
-         <% } %>
+          <% for( let i = 0; i < post.length; i++ ) { %>
+            <tr id="post<%= post[i].id %>">
+              <td style="text-align:start;"><%= post[i].id%></td>
+              <td style="text-align:start;"><%= post[i].title %></td>
+              <td style="text-align:start;"><a class="linkuser" href="/profile/<%= post[i].id %>/temas/"><%= post[i].username %></a></td>
+              <td><%= post[i].created %></td>
+              <td><%= post[i].likes %></td>
+              <td><%= post[i].comments %></td>
+              <td><%= post[i].views %></td>
+              <td><button class="btn grn" onclick=" window.location.href = '/foro/tema/<%=post[i].foro %>/<%=post[i].id %>/1'">Ver</button></td>
+              <td><button class="btn red" onclick="eliminar('<%= post[i].id %>')">Eliminar</button></td>
+            </tr>
+          <% } %>
       </tbody>
     </section>
   </section>
@@ -80,23 +68,23 @@ function editar(i,e){
   console.log({i,e});
 }
 
-function Eliminar(i,id,usr){
+function eliminar(id){
   Swal.fire({
-  title: `Quieres eliminar a\n${usr}?`,
-  text: 'Se eliminarán todos los likes, comentarios y post.\nLos cambios son irreversibles',
+  title: `Quieres eliminar este post?`,
+  text: 'Se eliminarán todos los likes y comentarios.\nLos cambios son irreversibles',
   showDenyButton: true,
   showCancelButton: true,
   showConfirmButton: false,
   denyButtonText: `Eliminar`,
 }).then((result) => {
   if (result.isDenied) {
-    EliminarSi(id,i);
+    EliminarSi(id);
   }
 })
 }
 
-function EliminarSi(id,i){
-  fetch('/deleteUser',
+function EliminarSi(id){
+  fetch('/deletePost',
           {method: 'POST',
           body: JSON.stringify({
             id
@@ -108,11 +96,11 @@ function EliminarSi(id,i){
         .then(res => {
          if(res.ok){
           Swal.fire(
-            'Usuario eliminado correctamente',
+            'Post eliminado correctamente',
             '',
             'success',
           ).then(() => {
-            window.location.href = '/dashboard/usuarios'
+            document.querySelector('#post'+id).remove()
           })
          }else{
           Swal.fire(

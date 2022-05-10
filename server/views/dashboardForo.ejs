@@ -4,9 +4,9 @@
     <nav>
       <li onclick="window.location.href= '/'"><a><i class="fa-solid fa-house"></i>Inicio</a></li>
       <li  onclick="window.location.href= '/dashboard'"><a><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
-      <li class="active" onclick="window.location.href= '/dashboard/usuarios'"><a><i class="fa-solid fa-users"></i>Usuarios</a></li>
+      <li  onclick="window.location.href= '/dashboard/usuarios'"><a><i class="fa-solid fa-users"></i>Usuarios</a></li>
       <li onclick="window.location.href= '/dashboard/categorias'"><a href="/dashboard/categorias"><i class="fa-solid fa-bookmark"></i>categorias</a></li>
-      <li onclick="window.location.href= '/dashboard/foro'"><a href="/dashboard/foro"><i class="fa-solid fa-inbox"></i>Foros</a></li>
+      <li  class="active" onclick="window.location.href= '/dashboard/foro'"><a href="/dashboard/foro"><i class="fa-solid fa-inbox"></i>Foros</a></li>
       <li  onclick="window.location.href= '/dashboard/posts'"><a href="/dashboard/posts"><i class="fa-solid fa-message"></i>Posts</a></li>
       </nav>
   </aside>
@@ -19,47 +19,14 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Usuario</th>
-                <th>Unido</th>
-                <th>Foto</th>
-                <th>Rango</th>
+                <th>Categoria</th>
+                <th>Foros</th>
                 <th>Eliminar</th>
                 <th>Editar</th>
             </tr>
         </thead>
         <tbody>
-            <% for (let i = 0; i < users.length; i++) { %>
-              <% let x = users[i].class == 1 ? "Owner" : users[i].class == 2 ? "Admin" :"Usuario"%>
-              <tr id="user<%= users[i].id %>">
-                <td style="text-align:start;"><%= users[i].id %></td>
-                <td  style="text-align:start;"><a class="linkuser" href="/profile/<%= users[i].id %>/temas/"><%= users[i].username %></a></td>
-                <td><%= users[i].created %></td>
-                <% if (users[i].class == 4) { %>
-                  <td><a class="linkuser" href="/profile/<%= users[i].id %>/temas/"><img src="/img/defaultuser.png"></a></td>
-                 <% }else{ %>
-                  <td><a class="linkuser" href="/profile/<%= users[i].id %>/temas/"><img src="<%= users[i].picture %>"></a></td>
-                  <%}%>
-                <td><%= x %> </td>
-                <% if (session.class == 1) { %>
-                  <% if (x == "Usuario" || x == "Admin") { %>
-                    <td><button class="btn red" onclick="Eliminar('<%= i%>','<%= users[i].id %>','<%= users[i].username %>')">Eliminar</button></td>
-                    <td><button class="btn grn" onclick="editar('<%= i%>','<%= users[i].id %>')">Editar</button></td>
-                        <% }else{ %>
-                          <td style="color: rgb(111, 111, 111);">No se puede</td>
-                          <td style="color: rgb(111, 111, 111);">No se puede</td>
-                        <% } %>  
-                  <% } %>
-                <% if (session.class == 2) { %>
-                  <% if (x == "Usuario") { %>
-                    <td><button class="btn red" onclick="Eliminar('<%= i%>','<%= users[i].id %>','<%= users[i].username %>')">Eliminar</button></td>
-                    <td><button class="btn grn" onclick="editar('<%= i%>','<%= users[i].id %>')">Editar</button></td>
-                      <% }else{ %>
-                        <td style="color: rgb(111, 111, 111);">No se puede</td>
-                        <td style="color: rgb(111, 111, 111);">No se puede</td>
-                      <% } %>  
-                <% } %>
-              </tr>
-         <% } %>
+
       </tbody>
     </section>
   </section>
