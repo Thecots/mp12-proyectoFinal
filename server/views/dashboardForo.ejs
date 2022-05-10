@@ -2,12 +2,12 @@
 <main>
   <aside>
     <nav>
-      <li onclick="window.location.href= '/'"><a><i class="fa-solid fa-house"></i>Inicio</a></li>
-      <li  onclick="window.location.href= '/dashboard'"><a><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
-      <li  onclick="window.location.href= '/dashboard/usuarios'"><a><i class="fa-solid fa-users"></i>Usuarios</a></li>
-      <li onclick="window.location.href= '/dashboard/categorias'"><a href="/dashboard/categorias"><i class="fa-solid fa-bookmark"></i>categorias</a></li>
-      <li  class="active" onclick="window.location.href= '/dashboard/foro'"><a href="/dashboard/foro"><i class="fa-solid fa-inbox"></i>Foros</a></li>
-      <li  onclick="window.location.href= '/dashboard/posts'"><a href="/dashboard/posts"><i class="fa-solid fa-message"></i>Posts</a></li>
+      <li onclick="window.location.href= '/'"><i class="fa-solid fa-house"></i><a>Inicio</a></li>
+      <li  onclick="window.location.href= '/dashboard'"><i class="fa-solid fa-gauge"></i><a>Dashboard</a></li>
+      <li  onclick="window.location.href= '/dashboard/usuarios'"><i class="fa-solid fa-users"></i><a>Usuarios</a></li>
+      <li onclick="window.location.href= '/dashboard/categorias'"><i class="fa-solid fa-bookmark"></i><a href="/dashboard/categorias">categorias</a></li>
+      <li  class="active" onclick="window.location.href= '/dashboard/foro'"><i class="fa-solid fa-inbox"></i><a href="/dashboard/foro">Foros</a></li>
+      <li  onclick="window.location.href= '/dashboard/posts'"><i class="fa-solid fa-message"></i><a href="/dashboard/posts">Posts</a></li>
       </nav>
   </aside>
   <section class="main">
@@ -19,14 +19,22 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Foro</th>
                 <th>Categoria</th>
-                <th>Foros</th>
                 <th>Eliminar</th>
                 <th>Editar</th>
             </tr>
         </thead>
         <tbody>
-
+          <% for( let i = 0; i < foro.length; i++ ) { %>
+            <tr>
+              <td><%= foro[i].id%></td>
+              <td><%= foro[i].name%></td>
+              <td><%= foro[i].cat %></td>
+              <td><button class="btn red" onclick="eliminar('<%= foro[i].id %>')">Eliminar</button></td>
+              <td><button class="btn grn" onclick="editar('<%= foro[i].id %>')">Editar</button></td>
+            </tr>
+          <% } %>
       </tbody>
     </section>
   </section>
@@ -118,9 +126,9 @@ function editar(i,id){
 
   
   
-    function Eliminar(i,id,usr){
+    function eliminar(id){
   Swal.fire({
-  title: `Quieres eliminar a\n${usr}?`,
+  title: `Quieres eliminar este foro?`,
   text: 'Se eliminarán todos los likes, comentarios y post.\nLos cambios son irreversibles',
   showDenyButton: true,
   showCancelButton: true,
@@ -128,13 +136,13 @@ function editar(i,id){
   denyButtonText: `Eliminar`,
 }).then((result) => {
   if (result.isDenied) {
-    EliminarSi(id,i);
+    EliminarSi(id);
   }
 })
 }
 
-function EliminarSi(id,i){
-  fetch('/deleteUser',
+function EliminarSi(id){
+  fetch('/deleteForo',
           {method: 'POST',
           body: JSON.stringify({
             id
@@ -146,11 +154,11 @@ function EliminarSi(id,i){
         .then(res => {
          if(res.ok){
           Swal.fire(
-            'Usuario eliminado correctamente',
+            'Foro eliminado correctamente',
             '',
             'success',
           ).then(() => {
-            document.querySelector('#user'+id).remove()
+            window.location.href = '/dashboard/foro'
           })
          }else{
           Swal.fire(

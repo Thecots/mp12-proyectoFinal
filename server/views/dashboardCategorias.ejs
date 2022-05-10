@@ -2,12 +2,12 @@
 <main>
   <aside>
     <nav>
-      <li onclick="window.location.href= '/'"><a><i class="fa-solid fa-house"></i>Inicio</a></li>
-      <li  onclick="window.location.href= '/dashboard'"><a><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
-      <li  onclick="window.location.href= '/dashboard/usuarios'"><a><i class="fa-solid fa-users"></i>Usuarios</a></li>
-      <li class="active"><a href="/dashboard/categorias"><i class="fa-solid fa-bookmark"></i>categorias</a></li>
-      <li onclick="window.location.href= '/dashboard/foro'"><a href="/dashboard/foro"><i class="fa-solid fa-inbox"></i>Foros</a></li>
-      <li  onclick="window.location.href= '/dashboard/posts'"><a href="/dashboard/posts"><i class="fa-solid fa-message"></i>Posts</a></li>
+      <li onclick="window.location.href= '/'"><i class="fa-solid fa-house"></i><a>Inicio</a></li>
+      <li  onclick="window.location.href= '/dashboard'"><i class="fa-solid fa-gauge"></i><a>Dashboard</a></li>
+      <li  onclick="window.location.href= '/dashboard/usuarios'"><i class="fa-solid fa-users"></i><a>Usuarios</a></li>
+      <li class="active"><i class="fa-solid fa-bookmark"></i><a href="/dashboard/categorias">categorias</a></li>
+      <li onclick="window.location.href= '/dashboard/foro'"><i class="fa-solid fa-inbox"></i><a href="/dashboard/foro">Foros</a></li>
+      <li  onclick="window.location.href= '/dashboard/posts'"><i class="fa-solid fa-message"></i><a href="/dashboard/posts">Posts</a></li>
       </nav>
   </aside>
   <section class="main">
@@ -162,28 +162,25 @@ function crearCategoria(){
     <div class="hideeditar">
     <div class="hideoncl" onclick="document.querySelector('.hideeditar').remove()"></div>
     <div class="boxedit">
-      <h2><b>Editar -</b> ${categoria}</h2>
+      <h2><b>Crear categoria</b></h2>
       <div class="inpts">
-        <form id="fomeditars">
+        <form id="newcategory">
           <div class="text-field" id="password">
-            <input minlength="4" value="${categoria}" required autofocus> 
+            <input minlength="4" required autofocus> 
             <label class="label">Categoria</label>
           </div>
-          <input hidden value="${id}">
-          <button class="btn grn" type="submit">Editar</button>
+          <button class="btn grn" type="submit">Crear</button>
           </form>
       </div>
       </div>
       </div>`;
       document.querySelector('body').innerHTML += form;
 
-      document.querySelector('#fomeditars').addEventListener('submit', e => {
+      document.querySelector('#newcategory').addEventListener('submit', e => {
         e.preventDefault()
-        debugger
-        fetch('/editarCategoria',
+        fetch('/newCategory',
           {method: 'POST',
           body: JSON.stringify({
-            id: e.currentTarget[1].value,
             categoria: e.currentTarget[0].value,
           }),
           headers:{
@@ -193,13 +190,12 @@ function crearCategoria(){
         .then(res => {
           console.log(res);
          if(res.ok){
-          document.querySelector('#categoria1').children[1].innerText = res.categoria;
           Swal.fire(
             'Categoria editado correctamente',
             '',
             'success',
           ).then(() => {
-            document.querySelector('.hideeditar').remove()
+            window.location.href = '/dashboard/categorias';
           })
          }else{
           Swal.fire(

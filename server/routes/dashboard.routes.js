@@ -48,7 +48,6 @@ router.get('/dashboard/usuarios',[cehckSession,userArea, adminArea], async(req,r
 
 router.get('/dashboard/categorias',[cehckSession,userArea, adminArea], async(req,res) => { 
   const categorias = await dbfind(`SELECT categorias.*, (SELECT count(*) FROM foros WHERE foros.categoria = categorias.id) as foros FROM categorias`);
-  console.log(categorias.res[0].id);
   res.render('dashboardCategorias',{
     session: req.session,
     dashboard: true,
@@ -58,10 +57,17 @@ router.get('/dashboard/categorias',[cehckSession,userArea, adminArea], async(req
 
 
 router.get('/dashboard/foro',[cehckSession,userArea, adminArea], async(req,res) => { 
+  const foro = await dbfind(`SELECT foros.*, c.categoria as cat FROM foros LEFT JOIN categorias as c ON c.id = foros.
+  categoria
+  `);
+  const categoria = await dbfind(`SELECT * FROM categorias`);
+
 
   res.render('dashboardForo',{
     session: req.session,
-    dashboard: true
+    dashboard: true,
+    foro: foro.res,
+    cat: categoria.res
     })
 });
 
@@ -87,7 +93,6 @@ router.post('/editarCategoria', [cehckSession,userArea, adminArea], async(req,re
   const users = await dbfind(`SELECT * FROM categorias WHERE categoria = '${req.body.categoria}'`)
   if(users.res.length == 0 || users.res[0].id == req.body.id){
     users2 = await dbfind(`UPDATE categorias SET categoria = '${req.body.categoria}' WHERE id = ${req.body.id}`)
-    console.log(users2);
     res.json({ok:true,categoria:req.body.categoria})
   }else{
     res.json({ok:false})
@@ -144,6 +149,12 @@ router.post('/deletePost',[cehckSession,userArea, adminArea], async(req,res) => 
   res.json({ok:false})
 });
 
+router.post("/newCategory", [cehckSession,userArea, adminArea], async(req,res) => {
+  c = await dbfind(`INSERT INTO categorias(categoria) VALUES('${req.body.categoria}')`);
+  if(c.ok) res.json({ok:true, cat:req.body.categoria})
+  else res.json({ok:true}) 
+});
+
 router.post('/deleteCategoria',[cehckSession,userArea, adminArea], async(req,res) => { 
   const id = req.body.id;
    /* comentslikes */
@@ -167,11 +178,32 @@ router.post('/deleteCategoria',[cehckSession,userArea, adminArea], async(req,res
   /* categoria */
   ca = await dbfind(`DELETE categorias FROM categorias WHERE id = ${id}`);
 
-
-  console.log({cl,pl,c,p,f,ca});
-
-
   if(cl){
+    return res.json({ok:true})
+  }
+  res.json({ok:false})
+});
+
+
+router.post('/deleteForo',[cehckSession,userArea, adminArea], async(req,res) => { 
+  const id = req.body.id;
+   /* comentslikes */
+   cl = await dbfind(`
+    DELETE comentslikes FROM comentslikes
+    LEFT JOIN comments ON comentslikes.comment = comments.id
+    LEFT JOIN posts ON posts.id = comments.post
+    LEFT JOIN foros ON foros.id = posts.foro WHERE foros.id = ${id}`);
+  /* postlikes */
+  pl = await dbfind(`DELETE postslikes FROM postslikes LEFT JOIN posts ON posts.id = postslikes.post LEFT JOIN foros ON foros.id = posts.foro WHERE foros.id = ${id}`);
+  /* comments */
+  c = await dbfind(`DELETE comments FROM comments LEFT JOIN posts ON posts.id = comments.post LEFT JOIN foros ON foros.id = posts.foro WHERE foros.id =  ${id}`); 
+  /* posts */
+  p = await dbfind(`DELETE posts FROM posts LEFT JOIN foros ON foros.id = posts.foro WHERE foros.id = ${id}`);
+  /* foros */
+  f = await dbfind(`DELETE foros FROM foros WHERE id = ${id}`);
+
+
+  if(cl.ok && pl.ok && c.ok && p.ok && f.ok){
     return res.json({ok:true})
   }
   res.json({ok:false})

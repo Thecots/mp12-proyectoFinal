@@ -246,3 +246,22 @@ tr{
   height: 50px;
   object-fit: cover;
 }
+main aside nav li.active i{
+  color: white;
+} 
+@media (max-width: 768px) {
+  main{
+    grid-template-columns: 50px 1fr;
+  }
+
+  main aside nav li a{
+    display: none;
+  }
+  main aside nav li.active i{
+    color: white;
+  } 
+  main aside nav li{
+    justify-content: center;
+  }
+
+}
