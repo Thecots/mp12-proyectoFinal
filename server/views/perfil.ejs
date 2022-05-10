@@ -1,7 +1,13 @@
 <main>
   <section class="profileHead">
     <div class="top">
+     <% if (data.class == 4) { %>
+        <h1>USUARIO ELIMINADO</h1>
+    <% } else { %>
       <h1><%=data.username%></h1>
+
+     <% } %> 
+     
       <span>Unido: <b><%=data.created%></b></span>
     </div>
     <div class="bottom">

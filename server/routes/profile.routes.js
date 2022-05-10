@@ -66,7 +66,7 @@ router.get('/profile/:id/comentarios', [cehckSession], async (req,res) => {
 
 /* GET - perfil + temas */
 router.get('/profile/:id/temas', [cehckSession], async (req,res) => {
-  sql = await dbfind(`SELECT id,username,picture,created FROM users WHERE id='${req.params.id}'`)
+  sql = await dbfind(`SELECT class,id,username,picture,created FROM users WHERE id='${req.params.id}'`)
   if(sql.res.length == 0) return res.redirect('/');
   sql.res[0].created = `${['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','noviembre','Diciembre'][moment(sql.res[0].created,'YYYY/MM/DD').format('M')-1]} ${moment(sql.res[0].created,'YYYY/MM/DD').format('D')}, ${moment(sql.res[0].created,'YYYY/MM/DD').format('YYYY')}`
 

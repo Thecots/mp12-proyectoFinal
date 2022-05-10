@@ -71,6 +71,7 @@ section.main{
   grid-area: main;
   background: #ffff;
   box-shadow: 0 0 10px  rgba(166, 166, 166, 0.086);
+  overflow-y: auto;
 
 }
 
@@ -83,5 +84,165 @@ section.main header{
 section.main header h1{
   font-weight: 400;
   font-size: 30px;
+  
   text-transform: uppercase;
+}
+
+section.main section.content{
+  padding: 10px;
+}
+
+section.main .baseStats{
+  display: grid;
+  grid-template-columns:repeat( auto-fit, minmax(250px, 1fr) );
+  gap: 10px;
+}
+
+.baseStats .box{
+  background-color: #1a1a1a;
+  padding: 5px;
+  border-radius: 5px;
+}
+.baseStats .box div{
+  border-radius: 3px;
+  background: white;
+  padding: 5px 5px;
+}
+.baseStats .box div p{
+  font-size: 30px;
+  font-weight: 400;
+}
+.baseStats .box h1{
+  padding-top: 5px;
+  font-size: 25px;
+  color: white;
+  font-weight: 500;
+}
+
+.chart{
+  margin: 50px auto;
+  width: 1000px;
+  max-width: 100%;
+}
+
+.content h3{
+  font-size: 25px;
+  font-weight: 400;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  text-decoration: underline;
+}
+
+.tablausers img{
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+tr{
+  text-align: center;
+}
+
+.csbtn{
+  margin-left: 5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.btn{
+  min-width: fit-content;
+  padding: 0 5px;
+  width: 100px;
+  height: 25px;
+  border: none;
+  outline: none;
+  background: royalblue;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.grn{
+  background: rgb(108, 221, 125);
+  color: black;
+
+}
+
+.red{
+  background: rgb(237, 92, 92);
+}
+
+.linkuser{
+  text-decoration: none;
+  color: black !important;
+  cursor: pointer;
+}
+
+.linkuser:hover{
+  text-decoration: underline;
+}
+
+
+
+.hideeditar{
+  position: absolute;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.364);
+  display: flex;
+  justify-content: center;
+}
+
+.hideoncl{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 160;
+}
+
+.boxedit{
+  overflow-y: auto;
+  max-width: 100%;
+  width: 500px;
+  height: fit-content;
+  background: white;
+  margin-top: 50px;
+  z-index: 260;
+  border-radius: 5px;
+  padding: 5px;
+  padding-bottom: 20px;
+}
+
+.boxedit h2 {
+  font-weight: 400;
+  margin-top: 10px;
+  width: 100%;
+  border-bottom: 1px solid black;
+}
+
+#fomeditars{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  padding: 0 15px;
+  margin: 15px auto;
+  margin-bottom: 0px;
+}
+
+
+
+.foto, .admins{
+  display: grid;
+  align-items: center;
+  grid-template-columns: 120px 50px 100px;
+  gap: 10px;
+}
+.foto img{
+  align-self: flex-end;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
 }

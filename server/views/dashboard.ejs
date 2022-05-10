@@ -1,18 +1,87 @@
 <main>
   <aside>
     <nav>
-      <li><a href="/"><i class="fa-solid fa-house"></i>Inicio</a></li>
-      <li class="active"><a href="/dashboard"><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
-      <li><a href="/dashboard/usuarios"><i class="fa-solid fa-users"></i>Usuarios</a></li>
-      <li><a href="/dashboard/categorias"><i class="fa-solid fa-bookmark"></i>categorias</a></li>
-      <li><a href="/dashboard/foros"><i class="fa-solid fa-inbox"></i>Foros</a></li>
-      <li><a href="/dashboard/dashboard"><i class="fa-solid fa-message"></i>Posts</a></li>
+      <li onclick="window.location.href= '/'"><a><i class="fa-solid fa-house"></i>Inicio</a></li>
+      <li class="active" onclick="window.location.href= '/dashboard'"><a><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
+      <li  onclick="window.location.href= '/dashboard/usuarios'"><a><i class="fa-solid fa-users"></i>Usuarios</a></li>
+      <li onclick="window.location.href= '/dashboard/posts'"><a href="/dashboard/dashboard"><i class="fa-solid fa-message"></i>Posts</a></li>
+
     </nav>
   </aside>
   <section class="main">
     <header>
       <h1>Dashboard</h1>
     </header>
+    <section class="content">
+      <h3>Estadísticas Globales</h3>
+
+      <section class="baseStats">
+        <div class="box">
+          <div><p><%= num.users %></p></div>
+          <h1>Usuarios</h1>
+        </div>
+        <div class="box">
+          <div><p><%= num.posts %></p></div>
+          <h1>Posts</h1>
+        </div>
+        <div class="box">
+          <div><p><%= num.comments %></p></div>
+          <h1>Comentarios</h1>
+        </div>
+        <div class="box">
+          <div><p><%= num.likes %></p></div>
+          <h1>Likes</h1>
+        </div>
+      </section><br>
+      <h3>Estadísticas Mensuales</h3>
+      <section class="chart">
+        <div>
+          <canvas id="myChart"></canvas>
+        </div>
+      </section>
+    </section>
   </section>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://kit.fontawesome.com/43dede5314.js" crossorigin="anonymous"></script>
+<script>
+  // setup 
+  const data = {
+    labels: ['Usuarios regsitrados', 'Post publicados', 'Comentarios publicados'],
+    datasets: [{
+      label: 'Estadisticas Mensuales',
+      data: ["<%= tm.users %>", "<%= tm.posts %>", "<%= tm.comments %>"],
+      backgroundColor: [
+        'rgba(255, 26, 104, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 26, 104, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)'
+      ],
+      borderWidth: 1
+    }]
+  };
+
+  // config 
+  const config = {
+    type: 'bar',
+    data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+
+  // render init block
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+
+  </script>

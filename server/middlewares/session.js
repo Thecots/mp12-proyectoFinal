@@ -41,6 +41,21 @@ const userArea = (req,res,next) =>{
  }
 }
 
+const adminArea = (req,res,next) => {
+  try {
+    jwt.verify(req.cookies.session, process.env.SEED, (err, decoded) => {
+      if(err) return res.redirect('/')
+      if(decoded.class == 1 ||decoded.class == 2){
+      
+        return next();
+      }
+      res.redirect('/')
+    });
+   } catch (error) {
+     res.redirect('/')
+   }
+}
+
 
 
 /* (null,3,'DiEgoSnNiPeR16','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK','/img/defaultuser.png'); */
@@ -56,5 +71,6 @@ for(let i = 0; i < nicknames.length; i++){
 
 module.exports = {
   cehckSession,
-  userArea
+  userArea,
+  adminArea
 }

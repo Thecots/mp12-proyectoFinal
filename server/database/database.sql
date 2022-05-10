@@ -17,7 +17,8 @@ CREATE TABLE users(
   picture VARCHAR(250) DEFAULT '/img/defaultuser.png',
   pictureid  VARCHAR(100),
   FOREIGN KEY fk_class(class) REFERENCES class(id)
-);
+  );
+
 
 CREATE TABLE categorias(
   id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -77,14 +78,15 @@ CREATE TABLE comentslikes(
 INSERT INTO class VALUES
 (1,'OWNER'),
 (2,'ADMINISTRATOR'),
-(3,'USER');
+(3,'USER'),
+(4,'DELETED');
 
 
 INSERT INTO users(class,username,passwd) VALUES
 (1,'root','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK'),
-(3,'DiEgoSnNiPeR16','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK'),
+(2,'DiEgoSnNiPeR16','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK'),
 (3,'4-Wheel','$2b$10$sZzmMtdQVU.Akcj9O1eeZOcp5evCDTo8LLwd.1mmxFfZ.ugvsSquC'),
-(3,'Ace','$2b$10$sZzmMtdQVU.Akcj9O1eeZOcp5evCDTo8LLwd.1mmxFfZ.ugvsSquC'),     
+(4,'Ace','$2b$10$sZzmMtdQVU.Akcj9O1eeZOcp5evCDTo8LLwd.1mmxFfZ.ugvsSquC'),     
 (3,'Admiral','$2b$10$sZzmMtdQVU.Akcj9O1eeZOcp5evCDTo8LLwd.1mmxFfZ.ugvsSquC'), 
 (3,'Amazon','$2b$10$sZzmMtdQVU.Akcj9O1eeZOcp5evCDTo8LLwd.1mmxFfZ.ugvsSquC'),  
 (3,'Amethyst','$2b$10$sZzmMtdQVU.Akcj9O1eeZOcp5evCDTo8LLwd.1mmxFfZ.ugvsSquC'),

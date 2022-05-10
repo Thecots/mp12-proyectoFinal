@@ -33,7 +33,7 @@
        <% if (session.ok) { %>
         <li><a href="/profile/<%=session.id%>/temas/">Perfil</a></li>
        <% } %>
-       <% if (session.class == 1) { %>
+       <% if (session.class == 1 || session.class == 2) { %>
         <li><a href="/dashboard/">Dashboard</a></li>
        <% } %>
       </ul>
