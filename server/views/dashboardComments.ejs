@@ -15,8 +15,8 @@
       <li  onclick="window.location.href= '/dashboard/usuarios'"><i class="fa-solid fa-users"></i><a>Usuarios</a></li>
       <li onclick="window.location.href= '/dashboard/categorias'"><i class="fa-solid fa-bookmark"></i><a href="/dashboard/categorias">categorias</a></li>
       <li onclick="window.location.href= '/dashboard/foro'"><i class="fa-solid fa-inbox"></i><a href="/dashboard/foro">Foros</a></li>
-      <li class="active" onclick="window.location.href= '/dashboard/posts'"><i class="fa-solid fa-message"></i><a href="/dashboard/posts">Posts</a></li>
-      <li onclick="window.location.href= '/dashboard/comentarios'"><i class="fa-solid fa-comment-dots"></i><a href="/dashboard/comentarios">Comentarios</a></li>
+      <li  onclick="window.location.href= '/dashboard/posts'"><i class="fa-solid fa-message"></i><a href="/dashboard/posts">Posts</a></li>
+      <li class="active" onclick="window.location.href= '/dashboard/comentarios'"><i class="fa-solid fa-comment-dots"></i><a href="/dashboard/comentarios">Comentarios</a></li>
     </nav> 
   </aside>
   <section class="main">
@@ -28,30 +28,22 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Titulo</th>
+                <th>Titulo post</th>
                 <th>Foro</th>
+                <th>Comentario</th>
                 <th>Usuario</th>
-                <th>Fecha</th>
-                <th>Likes</th>
-                <th>Comentarios</th>
-                <th>Visitas</th>
-                <th>Ver</th>
                 <th>Eliminar</th>
             </tr>
         </thead>
         <tbody>
-          <% for( let i = 0; i < post.length; i++ ) { %>
-            <tr id="post<%= post[i].id %>">
-              <td style="text-align:start;"><%= post[i].id%></td>
-              <td style="text-align:start;"><%= post[i].title %></td>
-              <td style="text-align:start;"><%= post[i].name %></td>
-              <td style="text-align:start;"><a class="linkuser" href="/profile/<%= post[i].id %>/temas/"><%= post[i].username %></a></td>
-              <td><%= post[i].created %></td>
-              <td><%= post[i].likes %></td>
-              <td><%= post[i].comments %></td>
-              <td><%= post[i].views %></td>
-              <td><button class="btn grn" onclick=" window.location.href = '/foro/tema/<%=post[i].foro %>/<%=post[i].id %>/1'">Ver</button></td>
-              <td><button class="btn red" onclick="eliminar('<%= post[i].id %>')">Eliminar</button></td>
+          <% for( let i = 0; i < comments.length; i++ ) { %>
+            <tr id="post<%= comments[i].id %>">
+              <td><%= comments[i].id%></td>
+              <td><%= comments[i].title%></td>
+              <td><%= comments[i].name%></td>
+              <td><%= comments[i].coment%></td>
+              <td style="text-align:start;"><a class="linkuser" href="/profile/<%= comments[i].user %>/temas/"><%= comments[i].username %></a></td>
+              <td><button class="btn red" onclick="eliminar('<%= comments[i].id %>')">Eliminar</button></td>
             </tr>
           <% } %>
       </tbody>
@@ -67,14 +59,11 @@
     $('#example').DataTable();
 } );
 
-function editar(i,e){
-  console.log({i,e});
-}
 
 function eliminar(id){
   Swal.fire({
-  title: `Quieres eliminar este post?`,
-  text: 'Se eliminarán todos los likes y comentarios.\nLos cambios son irreversibles',
+  title: `Quieres eliminar este comentario?`,
+  text: 'Los cambios son irreversibles',
   showDenyButton: true,
   showCancelButton: true,
   showConfirmButton: false,
@@ -87,7 +76,7 @@ function eliminar(id){
 }
 
 function EliminarSi(id){
-  fetch('/deletePost',
+  fetch('/deleteComment',
           {method: 'POST',
           body: JSON.stringify({
             id
@@ -99,7 +88,7 @@ function EliminarSi(id){
         .then(res => {
          if(res.ok){
           Swal.fire(
-            'Post eliminado correctamente',
+            'Comentario eliminado correctamente',
             '',
             'success',
           ).then(() => {

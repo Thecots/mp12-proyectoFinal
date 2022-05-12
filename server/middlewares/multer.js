@@ -10,6 +10,4 @@ function upload(){
   })
   return upload = multer({storage}).single('img')
 }
-
-
 module.exports = upload

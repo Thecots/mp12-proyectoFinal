@@ -1,4 +1,4 @@
-const {cehckSession, userArea} = require('./../middlewares/session');
+const {cehckSession, userArea, profileArea} = require('./../middlewares/session');
 const { dbfind } = require("../middlewares/dbfind");
 const upload = require("../middlewares/multer");
 const express = require("express");
@@ -6,6 +6,7 @@ const moment = require('moment');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcrypt');
 
 const cloudinary = require('cloudinary');
 cloudinary.config({
@@ -157,5 +158,44 @@ router.post('/profile/image/', [cehckSession,userArea,upload()] , async(req,res)
     res.json({ok:false})
   }
 })
+
+
+router.get('/profile/editar/:id', [cehckSession,userArea, profileArea], async(req,res) => {
+
+  res.render('editarPerfil', {
+    profile: true,
+    editarperf: true,
+    session: req.session,
+    headeractive: 'Temas'
+
+  })
+})
+
+router.post('/profile/username/:id' , [cehckSession,userArea, profileArea], async(req,res) => {
+  sql = await dbfind(`SELECT passwd FROM users WHERE id = '${req.session.id}'`);
+  if(bcrypt.compareSync(req.body.passwd, sql.res[0].passwd)){
+    sql = await dbfind(`SELECT id FROM users WHERE username = '${req.body.username}'`);
+    if(sql.res.length == 0){
+      sql = await dbfind(`UPDATE users SET username = '${req.body.username}' WHERE id = '${req.session.id}'`);
+      res.json({ok: true})
+    }else if(sql.res[0].id == req.session.id) res.json({ok:false, err: "Ya tienes ese nombre de usuario !"})
+    else res.json({ok:false, err: "El nombre de usuario ya existe !"})
+  }else res.json({ok:false, err: "Contraseña incorrecta !"})
+})
+
+router.post('/profile/passwd/:id' , [cehckSession,userArea, profileArea], async(req,res) => {
+  console.log(req.body);
+  sql = await dbfind(`SELECT passwd FROM users WHERE id = '${req.session.id}'`);
+  if(bcrypt.compareSync(req.body.passwd, sql.res[0].passwd)){
+    if(req.body.newpasswd == req.body.passwd) res.json({ok:false, err: "No puedes poner contraseñas anteriores !"})
+    else{
+      passwd = bcrypt.hashSync(req.body.newpasswd, 10)
+      sql = await dbfind(`UPDATE users SET passwd = '${passwd}' WHERE id = '${req.session.id}'`);
+      res.json({ok: true})
+    }
+  }else res.json({ok:false, err: "Contraseña incorrecta !"})
+})
+
+
 
 module.exports = router;

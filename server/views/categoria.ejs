@@ -3,7 +3,7 @@
     <h1><%=data.foro%></h1>
   </div>
   <div class="footerPag onthetop">
-    <a class="button"
+    <a class="button gb"
     <% if (session.ok) { %>
       href="/nuevo_post/<%= data.id%>/"
     <% }else{ %> onclick="sesionAlert()" <%} %>
@@ -105,7 +105,7 @@
   <% } %>
   <% if (data.post.length != 0) { %>
   <div class="footerPag">
-    <a class="button"
+    <a class="button gb"
     <% if (session.ok) { %>
       href="/nuevo_post/<%= data.id%>/"
     <% }else{ %> onclick="sesionAlert()" <%} %>

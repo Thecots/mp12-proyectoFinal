@@ -1,3 +1,11 @@
+<style>
+  form#crearForo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 20px;
+}
+</style>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <main>
   <aside>
@@ -8,12 +16,14 @@
       <li onclick="window.location.href= '/dashboard/categorias'"><i class="fa-solid fa-bookmark"></i><a href="/dashboard/categorias">categorias</a></li>
       <li  class="active" onclick="window.location.href= '/dashboard/foro'"><i class="fa-solid fa-inbox"></i><a href="/dashboard/foro">Foros</a></li>
       <li  onclick="window.location.href= '/dashboard/posts'"><i class="fa-solid fa-message"></i><a href="/dashboard/posts">Posts</a></li>
+      <li onclick="window.location.href= '/dashboard/comentarios'"><i class="fa-solid fa-comment-dots"></i><a href="/dashboard/comentarios">Comentarios</a></li>
       </nav>
   </aside>
   <section class="main">
     <header>
-      <h1>Usuarios</h1>
+      <h1>Foros</h1>
     </header>
+    <button class="btn gb" style="background: royalblue; margin: 10px 0px 15px 5px;" onclick="crearForo()">Crear foro</button>
     <section class="content">
       <table id="example" class="display tablausers" style="width:100%">
         <thead>
@@ -21,16 +31,20 @@
                 <th>Id</th>
                 <th>Foro</th>
                 <th>Categoria</th>
+                <th>Descripción</th>
+                <th>Color</th>
                 <th>Eliminar</th>
                 <th>Editar</th>
             </tr>
         </thead>
         <tbody>
           <% for( let i = 0; i < foro.length; i++ ) { %>
-            <tr>
+            <tr id="foro<%= foro[i].id%>">
               <td><%= foro[i].id%></td>
-              <td><%= foro[i].name%></td>
+              <td style="text-align: left;"><%= foro[i].name%></td>
               <td><%= foro[i].cat %></td>
+              <td style="text-align: left;"><%= foro[i].description %></td>
+              <td style="background: <%= foro[i].color %>;"><%= foro[i].color %></td>
               <td><button class="btn red" onclick="eliminar('<%= foro[i].id %>')">Eliminar</button></td>
               <td><button class="btn grn" onclick="editar('<%= foro[i].id %>')">Editar</button></td>
             </tr>
@@ -39,6 +53,7 @@
     </section>
   </section>
 </main>
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://kit.fontawesome.com/43dede5314.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -48,78 +63,80 @@
     $('#example').DataTable();
 } );
 
-function editar(i,id){
-  let user = document.querySelector('#user'+id).children[1].children[0].innerText;
-  let rank = document.querySelector('#user'+id).children[4].innerText;
-  let k = rank == 'Admin' ? "checked=true" : "";
-  const form = `
-    <div class="hideeditar">
-    <div class="hideoncl" onclick="document.querySelector('.hideeditar').remove()"></div>
-    <div class="boxedit">
-      <h2><b>Editar -</b> ${user}</h2>
-      <div class="inpts">
-        <form id="fomeditars">
-          <div class="text-field" id="password">
-            <input minlength="4" value="${user}" required autofocus> 
-            <label class="label">Usuario</label>
-          </div>
-          <p style="color:red; display:none;">El nombre de usuario ya existe</p>
-          <div class="admins">
-            <label for="ddd">Administrador</label>
-            <input id="ddd" ${k} type="checkbox">
-          </div>
-          <div class="foto">
-            <label for="aaa">Borrar foto</label>
-            <input id="aaa" type="checkbox">
-            </div>   
-          <input hidden value="${id}">
-          <button class="btn grn" type="submit">Editar</button>
-          </form>
-      </div>
-      </div>
-      </div>`;
-      document.querySelector('body').innerHTML += form;
+let cat = [];
+fetch('/getCategorias',{
+  method: 'POST'
+}).then(r => r.json())
+  .then(r => cat = r.cat );
 
-      document.querySelector('#fomeditars').addEventListener('submit', e => {
-        e.preventDefault()
+function crearForo(){
+  console.log(cat);
+
+  let c = '';
+
+  cat.forEach(n => {
+    c+= `<option value="${n.id}">${n.categoria}</option>`
+  })
+
+  const form = `
+  <div class="hideeditar">
+  <div class="hideoncl" onclick="document.querySelector('.hideeditar').remove()"></div>
+  <div class="boxedit">
+    <h2><b>Crear foro</b> </h2>
+    <div class="inpts" style="padding: 0 15px;">
+      <form id="crearForo" >
+        <div class="text-field" >
+          <input minlength="4" required autofocus> 
+          <label class="label">Nombre</label>
+        </div>
+        <div class="text-field" >
+          <input minlength="4" required autofocus> 
+          <label class="label">Descripción</label>
+        </div>
+        <div class="text-field">
+          <select required>
+            ${c}
+          </select>
+        </div>
+        <input type="file" required>
+        <div class="text-field" >
+          <input style="padding: 0;" type="color" required autofocus> 
+        </div>
+        <button class="btn grn" type="submit">Crear</button>
+        </form>
+      </div>
+    </div>
+    </div>`;
+      document.querySelector('body').innerHTML += form;
+      const cf = document.querySelector('#crearForo')
+
+      cf.addEventListener('submit', e => {
+        e.preventDefault();
         
-        fetch('/editarUser',
-          {method: 'POST',
-          body: JSON.stringify({
-            id: e.currentTarget[3].value,
-            username: e.currentTarget[0].value,
-            admin: e.currentTarget[1].checked,
-            deletefoto: e.currentTarget[2].checked
-          }),
-          headers:{
-            'Content-Type': 'application/json'
-          }}
-        ).then(res => res.json())
-        .then(res => {
-          console.log(res);
-         if(res.ok){
-          document.querySelector('#user'+res.id).children[1].children[0].innerText = res.username;
-          document.querySelector('#user'+res.id).children[4].innerText = res.admin ? 'Admin' : 'Usuario';
-          if(res.foto){
-            document.querySelector('#user'+res.id).children[3].children[0].children[0].src = "/img/defaultuser.png"
+        
+        file = new FormData();
+        file.append('img',cf.children[3].files[0])
+        file.append('data', JSON.stringify(
+          {
+            name : cf.children[0].children[0].value,
+            description:cf.children[1].children[0].value, 
+            categoria: cf.children[2].children[0].value,
+            fondo: cf.children[4].children[0].value
           }
-          Swal.fire(
-            'Usuario editado correctamente',
-            '',
-            'success',
-          ).then(() => {
-            document.querySelector('.hideeditar').remove()
-          })
-         }else{
-          Swal.fire(
-            'Ha ocurrido un error en el servidor',
-            '',
-            'error',
-          ).then(() => {
-            document.querySelector('.hideeditar').remove()
-          })
-         }
-      });
+        ))
+
+        fetch('/createforo',{
+          method: 'POST',
+          body: file
+        }).then(r => r.json())
+          .then(r => {
+            if(r.ok){
+              window.location.reload()
+            }else{
+              window.location.reload()
+            }
+          })   
+
       })
     }
     
@@ -169,6 +186,87 @@ function EliminarSi(id){
          }
       });
 }
+
+function editar(id){
+  console.log(cat);
+
+  let c = '';
+  fr = document.querySelector('#foro'+id);
+  console.log(fr.children[2].innerText)
+  cat.forEach(n => {
+    if(n.categoria == fr.children[2].innerText ) c+= `<option selected value="${n.id}">${n.categoria}</option>`
+    else c+= `<option value="${n.id}">${n.categoria}</option>`
+    
+  })
+
+  const form = `
+  <div class="hideeditar">
+  <div class="hideoncl" onclick="document.querySelector('.hideeditar').remove()"></div>
+  <div class="boxedit">
+    <h2><b>Editar foro</b> </h2>
+    <div class="inpts" style="padding: 0 15px;">
+      <form id="crearForo" >
+        <div class="text-field" >
+          <input minlength="4" value="${fr.children[1].innerText}" required autofocus> 
+          <label  class="label">Nombre</label>
+        </div>
+        <div class="text-field" >
+          <input minlength="4"  value="${fr.children[3].innerText}" required autofocus> 
+          <label class="label">Descripción</label>
+        </div>
+        <div class="text-field">
+          <select required>
+            ${c}
+          </select>
+        </div>
+        <input type="file">
+        <div class="text-field" >
+          <input style="padding: 0;" value="${fr.children[4].innerText}" type="color" required autofocus> 
+          <input hidden value="${id}">
+        </div>
+        <button class="btn grn" type="submit">Editar</button>
+        </form>
+      </div>
+    </div>
+    </div>`;
+      document.querySelector('body').innerHTML += form;
+      const cf = document.querySelector('#crearForo')
+
+      cf.addEventListener('submit', e => {
+        e.preventDefault();
+        
+        
+        
+        file = new FormData();;
+        if(cf.children[3].files[0] != undefined){
+          file.append('img',cf.children[3].files[0])
+        }
+        file.append('data', JSON.stringify(
+          {
+            id: cf.children[4].children[1].value,
+            name : cf.children[0].children[0].value,
+            description:cf.children[1].children[0].value, 
+            categoria: cf.children[2].children[0].value,
+            fondo: cf.children[4].children[0].value
+          }
+        ))
+        
+
+        fetch('/editarForo',{
+          method: 'POST',
+          body: file
+        }).then(r => r.json())
+          .then(r => {
+            if(r.ok){
+              window.location.reload()
+            }else{
+              window.location.reload()
+            }
+          })   
+
+      })
+    }
+    
 
 
 </script>

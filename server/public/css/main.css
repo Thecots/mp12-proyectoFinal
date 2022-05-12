@@ -27,6 +27,16 @@ a{
   cursor: pointer;
 }
 
+.gb{
+  transition: 0.3s ease transform;
+}
+.gb:hover{
+  filter: brightness(0.95);
+}
+.gb:active{
+  transform: scale(0.98);
+}
+
 
 @media screen and (max-width: 700px) {
   header ._logo h1{

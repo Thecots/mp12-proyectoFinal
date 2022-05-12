@@ -2,7 +2,7 @@
   <header>
     <div class="_logo" onclick="window.location.href='/'">
       <img src="https://img.icons8.com/ios-filled/100/000000/gorilla.png">
-      <h1>PROJECT MONKEY</h1>
+      <h1>PROJECT GORILLA</h1>
     </div>
     <% if (!session.ok) { %>
       <!-- session false -->
@@ -62,8 +62,10 @@
                   <a href="/profile/<%= data.id %>/temas/"> <%= data.username %> / Temas</a>
                   <% }else if(headeractive == 'comentarios'){ %>
                     <a href="/profile/<%= data.id %>/comentarios/"> <%= data.username %> / Comentarios</a>
-                    <% }%>   
-                    <% }%>    
+                    <% }else if(editarperf){%>   
+                      <a href="/profile/editar/<%= session.id %>"> Editar</a>
+
+                      <% } }%>    
                   </section>
                   <% } %>
                 <% } %>

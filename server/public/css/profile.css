@@ -357,3 +357,57 @@ img#output {
   margin: 0 auto;
   margin-bottom: 15px;
 }
+
+.dpf{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: whitesmoke;
+  border-radius: 3px;
+  padding: 5px 14px;
+  color: #1b1b1b;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* editar perfil */
+.ep{
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap:  20px;
+}
+
+
+
+.ep form h1{
+  font-weight: 500;
+  margin-bottom: 10px;
+  padding-bottom: 2px;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.478);
+}
+
+.ep form p {
+  display: none;
+}
+
+.ep form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ep button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 30px;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  background: royalblue;
+  color: white;
+  margin-top: 5px;
+  cursor: pointer;
+}

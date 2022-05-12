@@ -8,11 +8,12 @@
       <li class="active"><i class="fa-solid fa-bookmark"></i><a href="/dashboard/categorias">categorias</a></li>
       <li onclick="window.location.href= '/dashboard/foro'"><i class="fa-solid fa-inbox"></i><a href="/dashboard/foro">Foros</a></li>
       <li  onclick="window.location.href= '/dashboard/posts'"><i class="fa-solid fa-message"></i><a href="/dashboard/posts">Posts</a></li>
+      <li onclick="window.location.href= '/dashboard/comentarios'"><i class="fa-solid fa-comment-dots"></i><a href="/dashboard/comentarios">Comentarios</a></li>
       </nav>
   </aside>
   <section class="main">
     <header>
-      <h1>Usuarios</h1>
+      <h1>Categorias</h1>
     </header>
     <button class="btn" style="background: royalblue; margin: 10px 0px 15px 5px;" onclick="crearCategoria()">Crear categoria</button>
     <section class="content">
@@ -50,7 +51,7 @@
 } );
 
 function editar(id){
-  let categoria = document.querySelector('#categoria1').children[1].innerText;
+  let categoria = document.querySelector('#categoria'+id).children[1].innerText;
 
   const form = `
     <div class="hideeditar">
@@ -73,7 +74,6 @@ function editar(id){
 
       document.querySelector('#fomeditars').addEventListener('submit', e => {
         e.preventDefault()
-        debugger
         fetch('/editarCategoria',
           {method: 'POST',
           body: JSON.stringify({
@@ -87,7 +87,7 @@ function editar(id){
         .then(res => {
           console.log(res);
          if(res.ok){
-          document.querySelector('#categoria1').children[1].innerText = res.categoria;
+          document.querySelector('#categoria'+id).children[1].innerText = res.categoria;
           Swal.fire(
             'Categoria editado correctamente',
             '',

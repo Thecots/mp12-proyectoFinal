@@ -20,7 +20,6 @@ function dbfind(sql){
   }
 }
 
-
 module.exports = {
   dbfind
 }

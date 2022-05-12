@@ -15,7 +15,7 @@ CREATE TABLE users(
   passwd VARCHAR(100) NOT NULL,
   created DATETIME default current_timestamp,
   picture VARCHAR(250) DEFAULT '/img/defaultuser.png',
-  pictureid  VARCHAR(100),
+  pictureid  VARCHAR(150),
   FOREIGN KEY fk_class(class) REFERENCES class(id)
   );
 
@@ -29,7 +29,8 @@ CREATE TABLE foros(
   id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   name VARCHAR(50) NOT NULL,
   description VARCHAR(200) NOT NULL,
-  image VARCHAR(200) NOT NULL,
+  image VARCHAR(250) NOT NULL,
+  imageid VARCHAR(100) NOT NUlL,
   color VARCHAR(50),
   categoria INT NOT NULL,
   FOREIGN KEY fk_categoria(categoria) REFERENCES categorias(id)
@@ -244,12 +245,12 @@ INSERT INTO categorias VALUES
 (3,'Sistemas');
 
 INSERT INTO foros VALUES
-(1,'OFF Topic y Humor','Hablemos de todo menos de juegos o temas de otros foros.','https://img.icons8.com/external-flatart-icons-solid-flatarticons/64/000000/external-talk-chat-flatart-icons-solid-flatarticons.png','#e69800',2),
-(2,'Videojuegos en general','Temas sobre juegos en general, Lanzamientos, aztuqalidad, gustos, preguntas...','https://img.icons8.com/glyph-neue/100/000000/controller.png','#ed4000',1),
-(3,'Noticias y actualidad','Tribuna abierta para comentar las noticias del mundo del videojuego.','https://img.icons8.com/ios/100/000000/globe--v1.png','#ed4000',1),
-(4,'PlayStation','Videojuegos, PSN, PSPlus, PlayStation VR y más para los seguidores de consolas Sony','https://img.icons8.com/windows/100/000000/play-station.png','#1a5cad',3),
-(5,'Xbox','Juegos, Xbox Live, Arcade, retrocompatibilidad y todo sobre las consolas Xbox de Microsoft.','https://img.icons8.com/ios-filled/100/000000/xbox.png','#50880b',3),
-(6,'PC / Hardware','Jugadores de PC, Steam, juegos digitales y expertos en configurar equipos y presupuestos.','https://img.icons8.com/ios-filled/100/000000/computer.png','#be0b0b',3);
+(1,'OFF Topic y Humor','Hablemos de todo menos de juegos o temas de otros foros.','https://img.icons8.com/external-flatart-icons-solid-flatarticons/64/000000/external-talk-chat-flatart-icons-solid-flatarticons.png',null,'#e69800',2),
+(2,'Videojuegos en general','Temas sobre juegos en general, Lanzamientos, aztuqalidad, gustos, preguntas...','https://img.icons8.com/glyph-neue/100/000000/controller.png',null,'#ed4000',1),
+(3,'Noticias y actualidad','Tribuna abierta para comentar las noticias del mundo del videojuego.','https://img.icons8.com/ios/100/000000/globe--v1.png',null,'#ed4000',1),
+(4,'PlayStation','Videojuegos, PSN, PSPlus, PlayStation VR y más para los seguidores de consolas Sony','https://img.icons8.com/windows/100/000000/play-station.png',null,'#1a5cad',3),
+(5,'Xbox','Juegos, Xbox Live, Arcade, retrocompatibilidad y todo sobre las consolas Xbox de Microsoft.','https://img.icons8.com/ios-filled/100/000000/xbox.png',null,'#50880b',3),
+(6,'PC / Hardware','Jugadores de PC, Steam, juegos digitales y expertos en configurar equipos y presupuestos.','https://img.icons8.com/ios-filled/100/000000/computer.png',null,'#be0b0b',3);
 
 
 INSERT INTO posts(title,content,foro,user) VALUES

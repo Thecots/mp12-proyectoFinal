@@ -4,6 +4,15 @@ const express = require("express");
 const path = require('path');
 const router = express.Router();
 const moment = require('moment');
+const upload = require('../middlewares/multer');
+const fs = require('fs');
+
+const cloudinary = require('cloudinary');
+cloudinary.config({
+  cloud_name: 'dqaomwude',
+  api_key: '642551195527337',
+  api_secret: 'y-UkdiFtaT4IbChRWlE8RtR5OQk'
+})
 
 router.get('/dashboard',[cehckSession,userArea, adminArea], async(req,res) => {
   const users = await dbfind('SELECT count(id) as users FROM users')
@@ -163,16 +172,12 @@ router.post('/deleteCategoria',[cehckSession,userArea, adminArea], async(req,res
     LEFT JOIN comments ON comentslikes.comment = comments.id
     LEFT JOIN posts ON posts.id = comments.post
     LEFT JOIN foros ON foros.id = posts.foro WHERE foros.categoria = ${id}`);
-
   /* postlikes */
   pl = await dbfind(`DELETE postslikes FROM postslikes LEFT JOIN posts ON posts.id = postslikes.post LEFT JOIN foros ON foros.id = posts.foro WHERE foros.categoria = ${id}`);
-
   /* comments */
   c = await dbfind(`DELETE comments FROM comments LEFT JOIN posts ON posts.id = comments.post LEFT JOIN foros ON foros.id = posts.foro WHERE foros.categoria =  ${id}`); 
-
   /* posts */
   p = await dbfind(`DELETE posts FROM posts LEFT JOIN foros ON foros.id = posts.foro WHERE foros.categoria = ${id}`);
-
   /* foros */
   f = await dbfind(`DELETE foros FROM foros WHERE categoria = ${id}`);
   /* categoria */
@@ -219,12 +224,13 @@ router.get('/dashboard/posts', [cehckSession,userArea, adminArea], async(req,res
   posts.views,
   posts.foro,
   u.username,
+  f.name,
   (SELECT count(*) FROM postslikes as ps WHERE ps.post = posts.id) as likes,
   (SELECT count(*) FROM comments as co WHERE co.post = posts.id) as comments
   FROM posts
-  LEFT JOIN users as u ON u.id = posts.user`
+  LEFT JOIN users as u ON u.id = posts.user
+  LEFT JOIN foros as f ON f.id = posts.foro`
   );
-
   sql.res.map(n => {
     n.created = moment(n.created).format('MM/DD/YYYY')
   })
@@ -234,6 +240,65 @@ router.get('/dashboard/posts', [cehckSession,userArea, adminArea], async(req,res
     dashboard: true,
     post: sql.res
     })
+})
+
+
+router.post('/createforo',[cehckSession,userArea, adminArea, upload()], async (req,res) => {
+  const data = JSON.parse(req.body.data)
+  
+  try {
+    const imgc = await cloudinary.v2.uploader.upload(req.file.path);
+    const sql = await dbfind(`INSERT INTO foros VALUES (null,'${data.name}','${data.description}','${imgc.url}','${imgc.public_id}', '${data.fondo}', ${parseInt(data.categoria)})`)
+    fs.unlink(path.join(__dirname,`../public/img/temp/${req.file.filename}`), function(err) {
+      if (err) console.log('error, img no deleted :(');});
+    res.json({ok:true})
+  } catch (error) {
+    res.json({ok:false})
+  }
+})
+
+router.post('/getCategorias', [cehckSession,userArea, adminArea],  async (req,res) => {
+  const categoria = await dbfind(`SELECT * FROM categorias`);
+  res.json({cat: categoria.res})
+})
+
+router.post('/editarForo' , [cehckSession,userArea, adminArea, upload()], async(req,res) => {
+  data = JSON.parse(req.body.data)
+  foro =  await dbfind(`SELECT * FROM foros WHERE id = ${data.id} `)
+
+  if(req.file == undefined){
+    sql = await dbfind(`UPDATE foros SET name = '${data.name}', description = '${data.description}', color = '${data.fondo}', categoria = ${parseInt(data.categoria)} WHERE id = ${data.id} `)
+  }else{
+    const imgc = await cloudinary.v2.uploader.upload(req.file.path);
+    if(foro.res[0].imageid != null){
+      await cloudinary.v2.uploader.destroy(foro.res[0].imageid);
+    }
+    fs.unlink(path.join(__dirname,`../public/img/temp/${req.file.filename}`), function(err) {
+      if (err) console.log('error, img no deleted :(');});
+
+    sql = await dbfind(`UPDATE foros SET name = '${data.name}', description = '${data.description}', color = '${data.fondo}', categoria = ${parseInt(data.categoria)} ,image = '${imgc.url}', imageid = '${imgc.public_id}' WHERE id = ${data.id} `)
+  }
+  
+  res.json({ok: true})
+})
+
+
+router.get('/dashboard/comentarios', [cehckSession,userArea, adminArea],  async (req,res) => {
+  sql = await dbfind(`SELECT comments.*, p.title, p.foro, f.name , f.categoria, u.username FROM comments LEFT JOIN posts as p ON p.id = comments.post LEFT JOIN foros as f ON f.id = p.foro LEFT JOIN users as u ON u.id = comments.user;`);
+  console.log(sql.res);
+  res.render('dashboardComments',{
+    session: req.session,
+    dashboard: true,
+    comments: sql.res
+    })
+});
+
+router.post('/deleteComment' , [cehckSession,userArea, adminArea],  async (req,res) => {
+  id = req.body.id
+  const categoria = await dbfind(`SELECT * FROM categorias`);
+  cl = await dbfind(` DELETE comentslikes FROM comentslikes WHERE comment = ${id}`);
+  c = await dbfind(`DELETE comments FROM comments WHERE id =  ${id}`); 
+  res.json({ok:true})
 })
 
 module.exports = router;

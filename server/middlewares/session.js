@@ -9,31 +9,26 @@ const cehckSession = (req,res,next) => {
       if(!err){
         sql = await dbfind(`select id from users where id = ${decoded.id}`)
         if(sql.ok && sql.res.length != 0){
-          picture = await dbfind(`select picture from users where id = ${decoded.id}`)
+          picture = await dbfind(`select picture, username from users where id = ${decoded.id}`)
           req.session = {
             ok: true,
             id: decoded.id,
-            username: decoded.username,
+            username: picture.res[0].username,
             picture:picture.res[0].picture,
             class: decoded.class
           };
         }   
         next()
-      }else{
-        next()
-      }
+      }else next()
     })
-  }else{
-    next()
-  }
-  
+  }else next()
+   
 }
 
 const userArea = (req,res,next) =>{
  try {
   jwt.verify(req.cookies.session, process.env.SEED, (err, decoded) => {
     if(err) return res.redirect('/')
-    
     next()
   });
  } catch (error) {
@@ -56,6 +51,11 @@ const adminArea = (req,res,next) => {
    }
 }
 
+const profileArea = (req,res,next) => {
+  if(req.params.id == req.session.id) next()
+  else res.redirect('/')
+  
+}
 
 
 /* (null,3,'DiEgoSnNiPeR16','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK','/img/defaultuser.png'); */
@@ -72,5 +72,6 @@ for(let i = 0; i < nicknames.length; i++){
 module.exports = {
   cehckSession,
   userArea,
-  adminArea
+  adminArea,
+  profileArea
 }
