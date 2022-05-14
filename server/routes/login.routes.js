@@ -22,7 +22,7 @@ router.post('/login', async(req, res) => {
         class: sql.res[0].class,
         picture: sql.res[0].picture
       },
-      process.env.SEED,
+      process.env.JWTSEED,
       { expiresIn: '9999days' }
     );
     res.setHeader("X-Access-Token", token);

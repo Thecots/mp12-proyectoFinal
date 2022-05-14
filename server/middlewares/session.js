@@ -1,21 +1,21 @@
 const jwt = require('jsonwebtoken');
-const decode = require('jsonwebtoken/decode');
 const { dbfind } = require('./dbfind');
 
+/* [GET] check if session is on or off */
 const cehckSession = (req,res,next) => {
   req.session = {ok:false};
   if(typeof req.cookies.session != 'undefined'){
-    jwt.verify(req.cookies.session, process.env.SEED, async(err, decoded) => {
+    jwt.verify(req.cookies.session, process.env.JWTSEED, async(err, decoded) => {
       if(!err){
         sql = await dbfind(`select id from users where id = ${decoded.id}`)
         if(sql.ok && sql.res.length != 0){
-          picture = await dbfind(`select picture, username from users where id = ${decoded.id}`)
+          picture = await dbfind(`select picture, username, class from users where id = ${decoded.id}`)
           req.session = {
             ok: true,
             id: decoded.id,
             username: picture.res[0].username,
             picture:picture.res[0].picture,
-            class: decoded.class
+            class: picture.res[0].class
           };
         }   
         next()
@@ -25,9 +25,10 @@ const cehckSession = (req,res,next) => {
    
 }
 
+/* [GET] user area security */
 const userArea = (req,res,next) =>{
  try {
-  jwt.verify(req.cookies.session, process.env.SEED, (err, decoded) => {
+  jwt.verify(req.cookies.session, process.env.JWTSEED, (err, decoded) => {
     if(err) return res.redirect('/')
     next()
   });
@@ -36,42 +37,51 @@ const userArea = (req,res,next) =>{
  }
 }
 
+/* [GET] admin area security */
 const adminArea = (req,res,next) => {
   try {
-    jwt.verify(req.cookies.session, process.env.SEED, (err, decoded) => {
-      if(err) return res.redirect('/')
-      if(decoded.class == 1 ||decoded.class == 2){
-      
-        return next();
-      }
-      res.redirect('/')
-    });
-   } catch (error) {
-     res.redirect('/')
-   }
+    if(req.session.class == 1 || req.session.class == 2){
+      return next();
+    }
+    res.redirect('/')
+ } catch (error) {
+  res.redirect('/')
+ }
 }
 
+/* [GET] editar perfil security */
 const profileArea = (req,res,next) => {
   if(req.params.id == req.session.id) next()
   else res.redirect('/')
   
 }
 
+/* [POST] editar perfil security */
+const profileArePost = (req,res,next) => {
+  if(req.params.id == req.session.id) next()
+  else res.redirect('/')
+  
+}
 
-/* (null,3,'DiEgoSnNiPeR16','$2b$10$yf3AxBwDGpKF09Ngr6z2tuN.J7tKAJoC8SUS77UCuBjPhxtBd.frK','/img/defaultuser.png'); */
 
-
-
-
-/* 
-for(let i = 0; i < nicknames.length; i++){
-  console.log(`(3,'${nicknames[i].replace( /\s/g, '')}','$2b$10$P8zGhlo4gM0XbGwVWqXPs.1cX4sY0WdiNofAJQKG4Dhiw/vOC1I1S'),`);
-} */
+/* [POST] admin security */
+const adminAreaPost = (req,res,next) => {
+  try {
+      if(req.session.class == 1 || req.session.class == 2){
+        return next();
+      }
+      res.json({ok:false})
+   } catch (error) {
+    res.json({ok:false})
+   }
+}
 
 
 module.exports = {
   cehckSession,
   userArea,
   adminArea,
-  profileArea
+  profileArea,
+  adminAreaPost,
+  profileArePost
 }

@@ -1,4 +1,4 @@
-const {cehckSession, userArea, profileArea} = require('./../middlewares/session');
+const {cehckSession, userArea, profileArea, profileArePost} = require('./../middlewares/session');
 const { dbfind } = require("../middlewares/dbfind");
 const upload = require("../middlewares/multer");
 const express = require("express");
@@ -10,9 +10,9 @@ const bcrypt = require('bcrypt');
 
 const cloudinary = require('cloudinary');
 cloudinary.config({
-  cloud_name: 'dqaomwude',
-  api_key: '642551195527337',
-  api_secret: 'y-UkdiFtaT4IbChRWlE8RtR5OQk'
+  cloud_name: process.env.CYNAME,
+  api_key: process.env.CYAPIKEY,
+  api_secret: process.env.CYAPISECRET
 })
 
 /* GET - perfil + comentarios */
@@ -160,7 +160,7 @@ router.post('/profile/image/', [cehckSession,userArea,upload()] , async(req,res)
 })
 
 
-router.get('/profile/editar/:id', [cehckSession,userArea, profileArea], async(req,res) => {
+router.get('/profile/editar/:id', [cehckSession,userArea, profileArea, profileArePost], async(req,res) => {
 
   res.render('editarPerfil', {
     profile: true,
@@ -184,7 +184,6 @@ router.post('/profile/username/:id' , [cehckSession,userArea, profileArea], asyn
 })
 
 router.post('/profile/passwd/:id' , [cehckSession,userArea, profileArea], async(req,res) => {
-  console.log(req.body);
   sql = await dbfind(`SELECT passwd FROM users WHERE id = '${req.session.id}'`);
   if(bcrypt.compareSync(req.body.passwd, sql.res[0].passwd)){
     if(req.body.newpasswd == req.body.passwd) res.json({ok:false, err: "No puedes poner contraseñas anteriores !"})

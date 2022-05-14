@@ -44,7 +44,7 @@
               <td style="text-align: left;"><%= foro[i].name%></td>
               <td><%= foro[i].cat %></td>
               <td style="text-align: left;"><%= foro[i].description %></td>
-              <td style="background: <%= foro[i].color %>;"><%= foro[i].color %></td>
+              <td <%- `style="background: ${ foro[i].color}"` %>><%= foro[i].color %></td>
               <td><button class="btn red" onclick="eliminar('<%= foro[i].id %>')">Eliminar</button></td>
               <td><button class="btn grn" onclick="editar('<%= foro[i].id %>')">Editar</button></td>
             </tr>

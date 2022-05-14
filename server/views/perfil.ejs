@@ -1,6 +1,8 @@
 <main>
   <section class="profileHead">
+   <% if (data.id == session.id) { %>
     <a class="dpf gb" href="/profile/editar/<%=data.id%>">Editar perfil</a>
+   <% } %>
     <div class="top">
      <% if (data.class == 4) { %>
         <h1>USUARIO ELIMINADO</h1>

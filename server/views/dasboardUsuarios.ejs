@@ -54,7 +54,7 @@
                 <% if (session.class == 2) { %>
                   <% if (x == "Usuario") { %>
                     <td><button class="btn red" onclick="Eliminar('<%= i%>','<%= users[i].id %>','<%= users[i].username %>')">Eliminar</button></td>
-                    <td><button class="btn grn" onclick="editar('<%= i%>','<%= users[i].id %>')">Editar</button></td>
+                    <td><button class="btn grn" onclick="editar('<%= i%>','<%= users[i].id %>',1)">Editar</button></td>
                       <% }else{ %>
                         <td style="color: rgb(111, 111, 111);">No se puede</td>
                         <td style="color: rgb(111, 111, 111);">No se puede</td>
@@ -75,7 +75,8 @@
     $('#example').DataTable();
 } );
 
-function editar(i,id){
+function editar(i,id, j){
+  let admins = j == 1 ? 'style="display:none;"' : "";
   let user = document.querySelector('#user'+id).children[1].children[0].innerText;
   let rank = document.querySelector('#user'+id).children[4].innerText;
   let k = rank == 'Admin' ? "checked=true" : "";
@@ -91,7 +92,7 @@ function editar(i,id){
             <label class="label">Usuario</label>
           </div>
           <p style="color:red; display:none;">El nombre de usuario ya existe</p>
-          <div class="admins">
+          <div class="admins" ${admins}>
             <label for="ddd">Administrador</label>
             <input id="ddd" ${k} type="checkbox">
           </div>
@@ -186,6 +187,9 @@ function EliminarSi(id,i){
             'success',
           ).then(() => {
             document.querySelector('#user'+id).remove()
+            $(document).ready(function() {
+                $('#example').DataTable();
+            } );
           })
          }else{
           Swal.fire(

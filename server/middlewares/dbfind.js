@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 
 let con = mysql.createConnection({
-  host: "localhost",
-  user: 'root',
-  password: '',
-  database: 'pkmonkey'
+  host: process.env.DBHOST,
+  user: process.env.DBUSER,
+  password: process.env.DBPASSWD,
+  database: process.env.DBNAME
 });
 
 function dbfind(sql){

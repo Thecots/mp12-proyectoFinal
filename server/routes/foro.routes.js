@@ -84,8 +84,7 @@ router.get('/foro/tema/:foro/:id/:page/', [cehckSession], async (req,res) => {
   end = 5;
   start = (req.params.page*end)- end;
   counts = await dbfind(`SELECT count(id) count FROM comments WHERE post = ${req.params.id}`);
-  sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.id}`);
-  if(sql.res.length == 0) return res.redirect('/');
+  sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.foro}`);
   sql = await dbfind(`UPDATE posts SET views = views+1 WHERE id = ${req.params.id}`);
   sql = await dbfind(`SELECT name FROM foros WHERE id = ${req.params.foro}`);
   sql3 = await dbfind(`SELECT id FROM postslikes WHERE post = ${req.params.id} AND user = ${req.session.id}`);

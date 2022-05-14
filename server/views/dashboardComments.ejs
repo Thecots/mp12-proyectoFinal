@@ -39,9 +39,9 @@
           <% for( let i = 0; i < comments.length; i++ ) { %>
             <tr id="post<%= comments[i].id %>">
               <td><%= comments[i].id%></td>
-              <td><%= comments[i].title%></td>
-              <td><%= comments[i].name%></td>
-              <td><%= comments[i].coment%></td>
+              <td  style="text-align:start;"><%= comments[i].title%></td>
+              <td  style="text-align:start;"><%= comments[i].name%></td>
+              <td  style="text-align:start;"><%= comments[i].coment%></td>
               <td style="text-align:start;"><a class="linkuser" href="/profile/<%= comments[i].user %>/temas/"><%= comments[i].username %></a></td>
               <td><button class="btn red" onclick="eliminar('<%= comments[i].id %>')">Eliminar</button></td>
             </tr>
