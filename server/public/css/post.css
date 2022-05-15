@@ -235,8 +235,7 @@ section.footer{
 
 .content img{
   max-width: 100%;
-  width: 500px;
-  height: 500px;
+  /* width: 500px; */
+  height: fit-content;
   object-fit: contain;
-  padding: 20px;
 }

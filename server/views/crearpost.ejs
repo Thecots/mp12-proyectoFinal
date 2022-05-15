@@ -88,7 +88,56 @@ menu div:hover{
     richTextField.document.execCommand(command, false, arg)
   }
 
+  document.getElementById('iframe').contentWindow.document.body.addEventListener('click', e => {
+    const rect = document.getElementById('iframe').contentWindow.document.body.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top ;
+    
+    document.getElementById('iframe').contentWindow.document.querySelectorAll('img').forEach(n => {
+      console.log({x,y});
+      console.log('x:'+n.x+" "+n.width);
+      console.log('y:'+n.y+" "+n.height);
+      if(x > n.x && x < n.x+n.width && y > n.y && y < n.y+n.height){
+      
+        size = prompt("Tamaño de la foto")
+        if(size > 0){
+          n.style.width = size
+        }
+      }
+    });
+
+
+  })
+
+
+  document.getElementById('iframe').contentWindow.document.body.addEventListener('mousemove', e => {
+    const rect = document.getElementById('iframe').contentWindow.document.body.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top ;
+    document.getElementById('iframe').contentWindow.document.querySelectorAll('img').forEach(n => {
+      if(x > n.x && x < n.x+n.width && y > n.y && y < n.y+n.height){
+        n.style["boxShadow"] = '0 0 0 3px red'
+        n.style["cursor"] = 'pointer'
+        n.style["filter"] = 'brightness(0.5)'
+
+      }else{
+        n.style["boxShadow"] = '0 0 0 red'
+        n.style["cursor"] = 'auto'
+        n.style["filter"] = 'brightness(1)'
+      }
+    });
+
+  })
+
+
+
   document.querySelector('form').addEventListener('submit', e => {
+    document.getElementById('iframe').contentWindow.document.querySelectorAll('img').forEach(n => {
+      n.style["boxShadow"] = '0 0 0 red'
+      n.style["cursor"] = 'auto'
+      n.style["filter"] = 'brightness(1)'
+    });
+    
     e.preventDefault();
     titulo = document.querySelector('.title');
     content = document.querySelector('.__editor');
