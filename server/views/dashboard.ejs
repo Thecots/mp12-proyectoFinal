@@ -47,44 +47,5 @@
 </main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://kit.fontawesome.com/43dede5314.js" crossorigin="anonymous"></script>
-<script>
-  // setup 
-  const data = {
-    labels: ['Usuarios regsitrados', 'Post publicados', 'Comentarios publicados'],
-    datasets: [{
-      label: 'Estadisticas Mensuales',
-      data: ["<%= tm.users %>", "<%= tm.posts %>", "<%= tm.comments %>"],
-      backgroundColor: [
-        'rgba(255, 26, 104, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255, 26, 104, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)'
-      ],
-      borderWidth: 1
-    }]
-  };
-
-  // config 
-  const config = {
-    type: 'bar',
-    data,
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  };
-
-  // render init block
-  const myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-  );
-
-  </script>
+<script> const dataejs = ["<%= tm.users %>", "<%= tm.posts %>", "<%= tm.comments %>"]; </script>
+<script src="/js/dashboard.js"></script>

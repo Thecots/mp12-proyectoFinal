@@ -21,7 +21,9 @@ router.post('/editarUser', [cehckSession,userArea, adminAreaPost], async(req,res
 
     const admin = req.body.admin == true ? 2 : 3 ;
     if(req.body.deletefoto ){
-      await cloudinary.v2.uploader.destroy(users.res[0].pictureid);
+      try {
+        await cloudinary.v2.uploader.destroy(users.res[0].pictureid);
+      } catch (error) { }
       users2 = await dbfind(`UPDATE users SET username = '${req.body.username}', class = ${admin} , picture = '/img/defaultuser.png', pictureid = NULL WHERE id = ${req.body.id}`) 
     }else{
       users2 = await dbfind(`UPDATE users SET username = '${req.body.username}', class = ${admin} WHERE id = ${req.body.id}`) 
@@ -48,14 +50,13 @@ router.post('/editarCategoria', [cehckSession,userArea, adminAreaPost], async(re
 router.post('/editarForo' , [cehckSession,userArea, adminAreaPost, upload()], async(req,res) => {
   const data = JSON.parse(req.body.data)
   const foro =  await dbfind(`SELECT * FROM foros WHERE id = ${data.id} `)
-  if(req.file == undefined){
+  if(req.file == undefined){ 
     sql = await dbfind(`UPDATE foros SET name = '${data.name}', description = '${data.description}', color = '${data.fondo}', categoria = ${parseInt(data.categoria)} WHERE id = ${data.id} `)
   }else{
     if(foro.res[0].imageid != null){
       try {
-        await cloudinary.v2.uploader.destroy(foro.res[0].imageid);
-      } catch (error) {
-        
+        await cloudinary.v2.uploader.destroy(foro.res[0].imageid); 
+      } catch (error) {      
       }
     }
     const imgc = await cloudinary.v2.uploader.upload(req.file.path);

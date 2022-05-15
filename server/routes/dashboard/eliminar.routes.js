@@ -17,7 +17,11 @@ router.post('/deleteUser',[cehckSession,userArea, adminAreaPost], async(req,res)
   
   const usr = await dbfind(`SELECT pictureid as id FROM users WHERE id = ${id}`) 
   if(usr.res[0].id != null){
-    await cloudinary.v2.uploader.destroy(usr.res[0].id);
+    try {
+      await cloudinary.v2.uploader.destroy(usr.res[0].id);
+    } catch (error) {
+      
+    }
   }
 
   /* likes en comentarios que le han dado */
@@ -127,7 +131,11 @@ router.post('/deleteForo',[cehckSession,userArea, adminAreaPost], async(req,res)
   
   const sql = await dbfind(`SELECT * FROM foros WHERE id = ${id}`);
   if(sql.res[0].imageid != null){
-    await cloudinary.v2.uploader.destroy(sql.res[0].imageid);
+    try {
+      await cloudinary.v2.uploader.destroy(sql.res[0].imageid);
+    } catch (error) {
+      
+    }
   }
 
   /* likes en comentarios */
